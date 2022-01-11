@@ -3,11 +3,11 @@
   <title>Utopia</title>
   
   <subtitle>Kyrie eleison.</subtitle>
-  <link href="http://example.com/atom.xml" rel="self"/>
+  <link href="https://karmotrine.fun/atom.xml" rel="self"/>
   
-  <link href="http://example.com/"/>
-  <updated>2022-01-11T14:26:26.320Z</updated>
-  <id>http://example.com/</id>
+  <link href="https://karmotrine.fun/"/>
+  <updated>2022-01-11T16:34:07.224Z</updated>
+  <id>https://karmotrine.fun/</id>
   
   <author>
     <name>Karmotrine</name>
@@ -17,11 +17,37 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Unity Shader_光照</title>
-    <link href="http://example.com/2022/01/11/Unity-Shader01%E2%80%94%E2%80%94%E5%85%89%E7%85%A7/"/>
-    <id>http://example.com/2022/01/11/Unity-Shader01%E2%80%94%E2%80%94%E5%85%89%E7%85%A7/</id>
+    <title>Unity Shader02——纹理</title>
+    <link href="https://karmotrine.fun/2022/01/11/Unity-Shader02%E2%80%94%E2%80%94%E7%BA%B9%E7%90%86/"/>
+    <id>https://karmotrine.fun/2022/01/11/Unity-Shader02%E2%80%94%E2%80%94%E7%BA%B9%E7%90%86/</id>
+    <published>2022-01-11T14:30:37.000Z</published>
+    <updated>2022-01-11T16:34:07.224Z</updated>
+    
+    <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=541480240&auto=1&height=66"></iframe><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！<del>（虽然溜一遍下来发现好像也能看</del></p><h2 id="纹理概念"><a href="#纹理概念" class="headerlink" title="纹理概念"></a>纹理概念</h2><p>纹理最初目的是使用一张图片控制模型的外观。在美术人员建模时会利用纹理展开技术把纹理映射坐标存储在每个顶点上。这意味着二位纹理坐标都代表着3D建模中的一个顶点。而这个坐标采用的是UV坐标（U为横轴V为纵轴）。纹理大小虽然多种多样，但是坐标都归一化到[0,1]范围内。但也有在这个范围外的，它们决定渲染引擎在超出这个范围时如何进行纹理采样。</p><h2 id="单张纹理实践"><a href="#单张纹理实践" class="headerlink" title="单张纹理实践"></a>单张纹理实践</h2><p>我们在光照时提到了物体的漫反射颜色。而我们通常会使用一张纹理来代替漫反射颜色。以下就是运用Blinn-Phong模型来计算光照的单张纹理：</p><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Single Texture&quot;&#123;    Properties    &#123;        _Color (&quot;Color&quot;, Color) &#x3D; (1,1,1,1)        &#x2F;&#x2F;控制物体渲染的整体色调        _MainTex (&quot;Main Tex&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;        &#x2F;&#x2F;一个2D纹理，赋值为白色，从而它一开始就是个全白的纹理        _Specular(&quot;Specular&quot;, Color)&#x3D;(1,1,1,1)        _Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20    &#125;    SubShader    &#123;        pass&#123;            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;            CGPROGRAM            #pragma vertex vert            #pragma fragment frag            #include &quot;Lighting.cginc&quot;            fixed4 _Color;            sampler2D _MainTex;            float4 _MainTex_ST;            &#x2F;&#x2F;在声明纹理变量的同时，需要声明 纹理名称_ST 这一float4变量            &#x2F;&#x2F;作用是存储该纹理的缩放和平移值            &#x2F;&#x2F;xy值为缩放值，zw为平移值，可以在纹理属性窗口中调节            fixed4 _Specular;            float _Gloss;            struct a2v            &#123;                float4 vertex:POSITION;                float3 normal:NORMAL;                float4 texcoord:TEXCOORD0;                &#x2F;&#x2F;将模型的第一组纹理坐标存储到该变量中            &#125;;            struct v2f            &#123;                float4 pos:SV_POSITION;                float3 worldNormal:TEXCOORD0;                float3 worldPos:TEXCOORD1;                float2 uv:TEXCOORD2;                &#x2F;&#x2F;使用该坐标进行纹理采样            &#125;;            v2f vert(a2v v)            &#123;                v2f o;                o.pos&#x3D;UnityObjectToClipPos(v.vertex);                o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;                o.uv&#x3D;v.texcoord.xy*_MainTex_ST.xy+_MainTex_ST.zw;                &#x2F;&#x2F;由于纹理属性存在缩放和偏移值，所以让纹理坐标先乘以缩放值，再加上偏移值。这才是真正的纹理采样uv坐标                &#x2F;&#x2F;Unity对上述操作有个专门的宏：                &#x2F;&#x2F;o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);                return o;            &#125;            fixed4 frag(v2f i):SV_Target            &#123;                fixed3 worldNormal&#x3D;normalize(i.worldNormal);                fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));                fixed3 albedo&#x3D;tex2D(_MainTex,i.uv).rgb*_Color.rgb;                &#x2F;&#x2F;对纹理进行采样，将返回的纹素值乘以物体的整体色调                &#x2F;&#x2F;albedo为材质的反射率                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;                fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));                &#x2F;&#x2F;通过反射率计算得到漫反射                fixed3 viewDir&#x3D;normalize(UnityWorldSpaceViewDir(i.worldPos));                fixed3 halfDir&#x3D;normalize(worldLightDir+viewDir);                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(max(0,dot(worldNormal,worldLightDir)),_Gloss);                return fixed4(ambient+diffuse+specular,1.0);            &#125;            ENDCG            &#125;    &#125;    FallBack &quot;Specular&quot;&#125;</code></pre>]]></content>
+    
+    
+      
+      
+    <summary type="html">&lt;link rel=&quot;stylesheet&quot; class=&quot;aplayer-secondary-style-marker&quot; href=&quot;\assets\css\APlayer.min.css&quot;&gt;&lt;script src=&quot;\assets\js\APlayer.min.js&quot; cla</summary>
+      
+    
+    
+    
+    <category term="Shader" scheme="https://karmotrine.fun/categories/Shader/"/>
+    
+    
+    <category term="笔记" scheme="https://karmotrine.fun/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="Shader" scheme="https://karmotrine.fun/tags/Shader/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Unity Shader01——光照</title>
+    <link href="https://karmotrine.fun/2022/01/11/Unity-Shader01%E2%80%94%E2%80%94%E5%85%89%E7%85%A7/"/>
+    <id>https://karmotrine.fun/2022/01/11/Unity-Shader01%E2%80%94%E2%80%94%E5%85%89%E7%85%A7/</id>
     <published>2022-01-11T06:20:49.000Z</published>
-    <updated>2022-01-11T14:26:26.320Z</updated>
+    <updated>2022-01-11T14:32:38.101Z</updated>
     
     <content type="html"><![CDATA[<link rel="stylesheet" class="aplayer-secondary-style-marker" href="\assets\css\APlayer.min.css"><script src="\assets\js\APlayer.min.js" class="aplayer-secondary-script-marker"></script><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=27876224&auto=1&height=66"></iframe><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！<del>（虽然溜一遍下来法线好像也能看</del></p><h2 id="Shader基础"><a href="#Shader基础" class="headerlink" title="Shader基础"></a>Shader基础</h2><h3 id="顶点着色器和片元着色器"><a href="#顶点着色器和片元着色器" class="headerlink" title="顶点着色器和片元着色器"></a>顶点着色器和片元着色器</h3><h4 id="顶点着色器"><a href="#顶点着色器" class="headerlink" title="顶点着色器"></a>顶点着色器</h4><p>顶点着色器是流水线的第一个阶段。它负责坐标变换以及逐顶点光照。比如把顶点坐标从模型空间转换到齐次裁剪空间，逐顶点光照在后面会说。</p><h4 id="片元着色器"><a href="#片元着色器" class="headerlink" title="片元着色器"></a>片元着色器</h4><p>片元着色器又称为像素着色器，它的输入是上一个阶段对定点信息插值得到的结果，输出是一个或者多个颜色值。在这个阶段可以完成很多重要渲染技术（纹理采样）。但是它只能影响单个片元，无法将任何结果发给其他人。</p><h3 id="Shader的结构"><a href="#Shader的结构" class="headerlink" title="Shader的结构"></a>Shader的结构</h3><pre class="language-ShaderLab" data-language="ShaderLab"><code class="language-ShaderLab">Shader&quot;MyShaderName&quot; &#x2F;&#x2F;Shader的名字，里面添加&#x2F;可以创建文件夹&#123;Properties&#123;&#x2F;&#x2F;属性，声明一些着色需要的变量_Color(&quot;Color Tint&quot;,Color)&#x3D;(1,1,1,1)&#x2F;&#x2F;代码内叫啥(&quot;窗口里叫啥&quot;,啥类型)&#x3D;赋值&#125;SubShader&#123;&#x2F;&#x2F;针对显卡A的SubShaderPass&#123;&#x2F;&#x2F;设置渲染状态和标签，此时声明Properties的变量Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;CGPROGRAM &#x2F;&#x2F;开始CG代码的片段&#x2F;&#x2F;该代码片段的编译指令：#pragma vertex vert &#x2F;&#x2F;vert函数为顶点着色方式#pragma fragment frag &#x2F;&#x2F;frag函数为片元着色方式#include &quot;Lighting.cginc&quot; &#x2F;&#x2F;声明引用的头文件struct a2v&#123;&#x2F;&#x2F;可以在这里声明结构体&#125;;struct v2f&#123;&#125;;v2f vert(a2v v)&#123;&#x2F;&#x2F;进行顶点着色器的相关操作&#125;fixed4 frag(v2f i):SV_Target&#123;&#x2F;&#x2F;进行片元着色器的相关操作&#125;ENDCG &#x2F;&#x2F;结束CG代码的片段&#125;&#x2F;&#x2F;其它需要的Pass&#125;FallBack &quot;Diffuse&quot;&#x2F;&#x2F;如果上面SubShader全寄了，就回调双引号内的Unity Shader&#125;</code></pre><h3 id="变量声明形式"><a href="#变量声明形式" class="headerlink" title="变量声明形式"></a>变量声明形式</h3><p>fixed4 :什么精度的数字+多少个连一起</p><p>精度： fixed&lt;half&lt;float</p><h2 id="标准光照模型"><a href="#标准光照模型" class="headerlink" title="标准光照模型"></a>标准光照模型</h2><p>在标准光照模型中，把进入摄像机的模型分成四部分，每个部分分别计算贡献度。四个部分分别为<strong>自发光、高光反射、漫反射、环境光</strong>。</p><h3 id="环境光-ambient"><a href="#环境光-ambient" class="headerlink" title="环境光(ambient)"></a>环境光(ambient)</h3><p>用来模拟间接光照。简介光照指在多个物体反射后进入摄像机的光线。环境光为一个全局变量，计算等式为：</p><p>$$ c_{ambient}=g_{ambient} $$</p><p>在Shader中，我们通过Unity内置变量UNITY_LIGHTMODEL_AMBIENT直接获得环境光颜色和强度信息。</p><h3 id="自发光-emissive"><a href="#自发光-emissive" class="headerlink" title="自发光(emissive)"></a>自发光(emissive)</h3><p>直接从光源进入摄像机的光线，计算等式为：</p><p>$$ c_{emissive}=m_{emissive} $$</p><p>由于大部分物体没有自发光特性，所以不存在Unity变量。对于存在自发光特性的物体，我们要先把材质的自发光颜色添加到输出颜色上再输出就行了。</p><h3 id="漫反射-diffuse"><a href="#漫反射-diffuse" class="headerlink" title="漫反射(diffuse)"></a>漫反射(diffuse)</h3><p>用于对那些被物体表面随机散射到各个方向的辐射度进行建模。该光照符合<strong>兰伯特定律</strong>:</p><p>$$ c_{diffuse}=(c_{light}*m_{diffuse})max(0,\hat{n}*\hat{l}) $$</p><p>其中<em><strong>n</strong></em>为表面法线，<em><strong>l</strong></em>为指向光源的单位矢量。当两者夹角为0时，说明光源直射，为最大值1.当两者垂直时值为0，说明光源射不到该表面。而大于90度已经是负值（没有光线反射），所以也算作是0.</p><h3 id="高光反射-specular"><a href="#高光反射-specular" class="headerlink" title="高光反射(specular)"></a>高光反射(specular)</h3><p>指完全沿着镜面反射方向被反射的光线，让物体看起来是有光泽的。</p><h4 id="Phong模型"><a href="#Phong模型" class="headerlink" title="Phong模型"></a>Phong模型</h4><p>计算高光反射所需信息有表面法线，视角方向，光源方向和反射方向等。其中反射方向可以通过前两个计算而得出：</p><p>$$ \hat{r}=2*(\hat(n)*\hat(l))*\hat(n)-\hat(l)$$</p><p>（知道法线方向和入射方向求反射方向属于是初中知识了。。。）</p><p>这样可以通过上述信息，使用Phong模型计算高光反射的部分：</p><p>$$ c_{specular}=（c_{light}*m_{specular})max(0,\hat{v}*\hat{r})^m_{gloss}$$</p><p>其中<strong>m</strong>gloss为光泽度，用于控制高光区域“亮点”的宽度。光泽度越大亮点越小。（毕竟下面范围是[0,1]，肯定越大是越小的）<strong>m</strong>specular是材料的高光反射，控制强度和颜色。<strong>c</strong>light是光源颜色和强度。</p><h4 id="Blinn模型"><a href="#Blinn模型" class="headerlink" title="Blinn模型"></a>Blinn模型</h4><p>另一种高光反射模型为Blinn模型。它与Phong模型的区别在于避免计算反射方向，而是在对光源方向和视角方向取平均后再归一化后，引入新的矢量得到的。即</p><p>$$\hat(h)={\frac {\hat(v)+\hat(l)}{\lvert \hat(v)+\hat(l) \rvert}}$$</p><p>后面就和Phong模型差不多，但是是拿n和h之间的夹角计算：</p><p>$$ c_{specular}=（c_{light}*m_{specular})max(0,\hat{n}*\hat{h})^m_{gloss}$$</p><h3 id="逐像素还是逐顶点"><a href="#逐像素还是逐顶点" class="headerlink" title="逐像素还是逐顶点"></a>逐像素还是逐顶点</h3><p>计算光照可以在两个着色器中计算。其中在片元着色器计算叫做<strong>逐像素光照</strong>（Phong着色），在顶点着色器中计算叫做<strong>逐顶点光照</strong>（高洛德着色）。</p><p>由于逐顶点光照只需在每个顶点上计算光照，然后再渲染图元内部线性插值，所以计算量小于逐像素光照。但由于存在非线性计算时，过度依赖线性插值的逐顶点光照就会产生问题。（特别是在高光反射上）</p><h2 id="漫反射光照模型实践"><a href="#漫反射光照模型实践" class="headerlink" title="漫反射光照模型实践"></a>漫反射光照模型实践</h2><h3 id="逐顶点光照计算"><a href="#逐顶点光照计算" class="headerlink" title="逐顶点光照计算"></a>逐顶点光照计算</h3><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Diffuse Vertex-Level&quot;&#123;    Properties    &#123;        _Diffuse(&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)        &#x2F;&#x2F;控制材质的漫反射颜色，可以在hierachy窗口调整    &#125;    SubShader    &#123;        pass&#123;        &#x2F;&#x2F;定义正确的LightMode才能得到Unity的内置光照变量（如_LightColor0）        Tags &#123; &quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot; &#125;        CGPROGRAM        #pragma vertex vert        #pragma fragment frag                &#x2F;&#x2F;需要使用下面的内置文件        #include &quot;Lighting.cginc&quot;&#x2F;&#x2F;只有定义一个和Properties类型匹配的变量才能使用Properties内变量        fixed4 _Diffuse;        struct a2v&#123;            float4 vertex:POSITION;            float3 normal:NORMAL; &#x2F;&#x2F;告诉Unity将模型顶点法线信息存储到normal变量内        &#125;;        struct v2f&#123;            float4 pos:SV_POSITION;            fixed3 color:COLOR;        &#125;;        v2f vert(a2v v)&#123;            v2f o;            o.pos&#x3D;UnityObjectToClipPos(v.vertex);            &#x2F;&#x2F;将顶点位置从模型空间转换到裁剪空间            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz;            &#x2F;&#x2F;获取环境光部分            fixed3 worldNormal&#x3D;normalize(mul(v.normal,(float3x3)unity_WorldToObject));            &#x2F;&#x2F;我们选用世界坐标下计算，而v.normal为模型空间下的，所以需要转化为世界坐标            &#x2F;&#x2F;转化流程为得到两空间的变换矩阵的逆矩阵unity_WorldToObject，然后和法线相乘            &#x2F;&#x2F;由于法线为一个三维向量，所以只需要截取前三行前三列            fixed3 worldLight&#x3D;normalize(_WorldSpaceLightPos0.xyz);            &#x2F;&#x2F;将光源方向归一化处理            fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLight));            &#x2F;&#x2F;计算漫反射光照            o.color&#x3D;ambient+diffuse;            &#x2F;&#x2F;将漫反射光和环境光部分相加，得到最终光照结果。            return o;        &#125;        fixed4 frag(v2f i):SV_TARGET&#123;            return fixed4(i.color,1.0);            &#x2F;&#x2F;由于所有计算在顶点着色器完成了，所以这里直接摸大鱼（        &#125;        ENDCG        &#125;    &#125;    FallBack &quot;Diffuse&quot;&#125;</code></pre><p><strong>saturate(x)</strong>:把x锁定在[0,1]范围内；</p><p><strong>normalize(x)</strong>:将x归一化，只留下方向；</p><p>**UnityObjectToClipPos(v)**：将顶点位置从模型空间转换到裁剪空间；</p><p><strong>mul(x,y)</strong>:计算两向量/一向量一矩阵/两矩阵相乘;</p><p><strong>dot(x,y)</strong>:计算x,y的点积。</p><h3 id="逐像素光照计算"><a href="#逐像素光照计算" class="headerlink" title="逐像素光照计算"></a>逐像素光照计算</h3><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader&quot;Custom&#x2F;Diffuse Pixel-Level&#123;Properties    &#123;        _Diffuse(&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)    &#125;    SubShader    &#123;        pass&#123;        Tags &#123; &quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot; &#125;        CGPROGRAM        #pragma vertex vert        #pragma fragment frag                #include &quot;Lighting.cginc&quot;        fixed4 _Diffuse;        struct a2v&#123;            float4 vertex:POSITION;            float3 normal:NORMAL;        &#125;;        struct v2f&#123;            float4 pos:SV_POSITION;            float3 worldNormal:TEXTCOORD0;        &#125;;        v2f vert(a2v v)&#123;            v2f o;            o.pos&#x3D;UnityObjectToClipPos(v.vertex);            o.worldNormal&#x3D;mul(v.normal,(float3x3)unity_WorldToObject);            &#x2F;&#x2F;将法线从世界空间转换为模型空间            &#x2F;&#x2F;由于计算全给了片元着色器，所以这里摸大鱼(            return o;        &#125;        fixed4 frag(v2f i):SV_TARGET&#123;            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT;            fixed3 worldNormal&#x3D;normalize(i.worldNormal);            fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);            fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));            fixed3 color&#x3D;ambient+diffuse;            return fixed4(color,1.0);        &#125;        ENDCG        &#125;    &#125;    FallBack &quot;Diffuse&quot;    &#125;</code></pre><p>完 全 相 同</p><h3 id="半兰伯特模型"><a href="#半兰伯特模型" class="headerlink" title="半兰伯特模型"></a>半兰伯特模型</h3><p>由于兰伯特光照模型没照到的地方全是0，莫得光暗变化，所以万能的v社在开发《半条命》的时候整了个半兰伯特光照模型，公式如下：</p><p>$$c_{diffuse}=(c_{light}*m_{diffuse})(0.5(\hat(n)*\hat(l))+0.5)$$</p><p>这样背光面也有明暗变化，视觉上加强了不少。</p><p><img src="%E5%AF%B9%E6%AF%94.png" alt="也亮堂了（" loading="lazy"></p><p>代码方面和逐像素计算差不多，但是修改的地方有：</p><pre class="language-Shader" data-language="Shader"><code class="language-Shader">fixed4 frag(v2f i):SV_TARGET&#123;            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT;            fixed3 worldNormal&#x3D;normalize(i.worldNormal);            fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);            fixed halfLambert&#x3D;saturate(dot(worldNormal,worldLightDir))*0.5+0.5;            &#x2F;&#x2F;这里单独拎出来算了            fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*halfLambert;            fixed3 color&#x3D;ambient+diffuse;            return fixed4(color,1.0);        &#125;</code></pre><h2 id="高光反射光照模型实践"><a href="#高光反射光照模型实践" class="headerlink" title="高光反射光照模型实践"></a>高光反射光照模型实践</h2><p>之前提到过反射方向的计算公式：</p><p>$$ \hat{r}=2*(\hat(n)*\hat(l))*\hat(n)-\hat(l)$$</p><p>在Unity里，你只需要**reflect(i,n)**就可以（i入射方向，n法线方向）</p><h3 id="逐顶点光照计算-1"><a href="#逐顶点光照计算-1" class="headerlink" title="逐顶点光照计算"></a>逐顶点光照计算</h3><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Specular Vertex-Level&quot;&#123;    Properties    &#123;        _Diffuse (&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)        _Specular (&quot;Specular&quot;,Color)&#x3D;(1,1,1,1)        &#x2F;&#x2F;控制高光反射的颜色        _Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20        &#x2F;&#x2F;控制高光反射区域大小    &#125;    SubShader    &#123;        pass&#123;            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;            CGPROGRAM            #pragma vertex vert            #pragma fragment frag            #include &quot;Lighting.cginc&quot;            fixed4 _Diffuse;            fixed4 _Specular;            fixed4 _Gloss;            struct a2v            &#123;                float4 vertex:POSITION;                float3 normal:NORMAL;            &#125;;            struct v2f            &#123;                float4 pos:SV_POSITION;                float3 color:COLOR;            &#125;;            v2f vert(a2v v)            &#123;                v2f o;                o.pos&#x3D;UnityObjectToClipPos(v.vertex);                &#x2F;&#x2F;将顶点位置从模型空间转换到裁剪空间                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz;                &#x2F;&#x2F;拿环境光                fixed3 worldNormal&#x3D;normalize(mul(v.normal,(float3x3)unity_WorldToObject));                fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);                fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));                &#x2F;&#x2F;算漫反射光照                fixed3 reflectDir&#x3D;normalize(reflect(-worldLightDir,worldNormal));                &#x2F;&#x2F;计算反射方向，由于reflect函数入射方向要求从光源指向交点，所以worldLightDir要取反                fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-mul(unity_ObjectToWorld,v.vertex).xyz);                &#x2F;&#x2F;_WorldSpaceCameraPos为摄像机位置，将顶点位置先转换为世界空间，然后与摄像机相减就是视角位置                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(saturate(dot(reflectDir,viewDir)),_Gloss);                &#x2F;&#x2F;最后进行Phong模型的计算，得出高光反射的贡献度                o.color&#x3D;ambient+diffuse+specular;                &#x2F;&#x2F;与环境光、漫反射光相加，存储到最后的颜色里                return o;            &#125;            fixed4 frag(v2f i):SV_Target&#123;            &#x2F;&#x2F;由于在顶点着色器都算完了，所以这里摸大鱼                return fixed4(i.color,1.0);            &#125;            ENDCG            &#125;    &#125;    FallBack &quot;Specular&quot;&#125;</code></pre><p>这时逐顶点计算高光反射的弊端就出现了：阴处都是一片片的。</p><p><img src="%E9%80%90%E9%A1%B6%E7%82%B9.png" alt="逐顶点" loading="lazy"></p><p>这是因为高光反射的计算是非线性的，而在顶点着色器里计算光照再插值是线性的。这样破坏了原来计算的非线性关系。</p><h3 id="逐像素光照计算-1"><a href="#逐像素光照计算-1" class="headerlink" title="逐像素光照计算"></a>逐像素光照计算</h3><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Unity Shader Book&#x2F;Chapter 6&#x2F;Specular Pixel-Level&quot;&#123;    Properties    &#123;        _Diffuse (&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)        _Specular (&quot;Specular&quot;,Color)&#x3D;(1,1,1,1)        _Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20    &#125;    SubShader    &#123;        pass&#123;            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;            CGPROGRAM            #pragma vertex vert            #pragma fragment frag            #include &quot;Lighting.cginc&quot;            fixed4 _Diffuse;            fixed4 _Specular;            fixed4 _Gloss;            struct a2v            &#123;                float4 vertex:POSITION;                float3 normal:NORMAL;            &#125;;            struct v2f            &#123;                float4 pos:SV_POSITION;                float3 worldNormal:TEXCOORD0;                float3 worldPos:TEXCOORD1;            &#125;;            v2f vert(a2v v)            &#123;                v2f o;                o.pos&#x3D;UnityObjectToClipPos(v.vertex);                o.worldNormal&#x3D;mul(v.normal,(float3x3)unity_WorldToObject);                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;                return o;            &#125;            fixed4 frag(v2f i):SV_Target&#123;                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz;                fixed3 worldNormal&#x3D;normalize(i.worldNormal);                fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);                fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));                fixed3 reflectDir&#x3D;normalize(reflect(-worldLightDir,worldNormal));                fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(saturate(dot(reflectDir,viewDir)),_Gloss);                return fixed4(ambient+diffuse+specular,1.0);            &#125;            ENDCG            &#125;    &#125;    FallBack &quot;Specular&quot;&#125;</code></pre><p>虽然计算过程基本相同，但是得出的效果更令人满意：</p><p><img src="%E9%80%90%E5%83%8F%E7%B4%A0.png" alt="逐像素" loading="lazy"></p><h3 id="Blinn-Phong模型计算"><a href="#Blinn-Phong模型计算" class="headerlink" title="Blinn-Phong模型计算"></a>Blinn-Phong模型计算</h3><p>由于逐顶点计算高光反射的拉跨程度，所以我们只用逐像素的方法来实践</p><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;BlinnPhong&quot;&#123;    Properties    &#123;        _Diffuse (&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)        _Specular (&quot;Specular&quot;,Color)&#x3D;(1,1,1,1)        _Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20    &#125;    SubShader    &#123;        pass&#123;            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;            CGPROGRAM            #pragma vertex vert            #pragma fragment frag            #include &quot;Lighting.cginc&quot;            fixed4 _Diffuse;            fixed4 _Specular;            fixed4 _Gloss;            struct a2v            &#123;                float4 vertex:POSITION;                float3 normal:NORMAL;            &#125;;            struct v2f            &#123;                float4 pos:SV_POSITION;                float3 worldNormal:TEXCOORD0;                float3 worldPos:TEXCOORD1;            &#125;;            v2f vert(a2v v)            &#123;                v2f o;                o.pos&#x3D;UnityObjectToClipPos(v.vertex);                o.worldNormal&#x3D;mul(v.normal,(float3x3)unity_WorldToObject);                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;                return o;            &#125;            fixed4 frag(v2f i):SV_Target&#123;                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz;                fixed3 worldNormal&#x3D;normalize(i.worldNormal);                fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);                fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));                fixed3 reflectDir&#x3D;normalize(reflect(-worldLightDir,worldNormal));                fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);                fixed3 halfDir&#x3D;normalize(worldLightDir+viewDir);                &#x2F;&#x2F;扣扣大，计算新矢量h                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(max(0,dot(worldNormal,halfDir)),_Gloss);                &#x2F;&#x2F;然后改成h和n点乘                return fixed4(ambient+diffuse+specular,1.0);            &#125;            ENDCG            &#125;    &#125;    FallBack &quot;Specular&quot;&#125;</code></pre><p>使用Blinn模型的高光反射部分看起来更大、更亮一些，所以大多数情况都会采用Blinn模型。</p>]]></content>
     
@@ -33,19 +59,19 @@
     
     
     
-    <category term="Shader" scheme="http://example.com/categories/Shader/"/>
+    <category term="Shader" scheme="https://karmotrine.fun/categories/Shader/"/>
     
     
-    <category term="笔记" scheme="http://example.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    <category term="笔记" scheme="https://karmotrine.fun/tags/%E7%AC%94%E8%AE%B0/"/>
     
-    <category term="Shader" scheme="http://example.com/tags/Shader/"/>
+    <category term="Shader" scheme="https://karmotrine.fun/tags/Shader/"/>
     
   </entry>
   
   <entry>
     <title>胡言乱语录的Unity一轮教程</title>
-    <link href="http://example.com/2022/01/10/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD%E5%BD%95%E7%9A%84Unity%E4%B8%80%E8%BD%AE%E6%95%99%E7%A8%8B/"/>
-    <id>http://example.com/2022/01/10/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD%E5%BD%95%E7%9A%84Unity%E4%B8%80%E8%BD%AE%E6%95%99%E7%A8%8B/</id>
+    <link href="https://karmotrine.fun/2022/01/10/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD%E5%BD%95%E7%9A%84Unity%E4%B8%80%E8%BD%AE%E6%95%99%E7%A8%8B/"/>
+    <id>https://karmotrine.fun/2022/01/10/%E8%83%A1%E8%A8%80%E4%B9%B1%E8%AF%AD%E5%BD%95%E7%9A%84Unity%E4%B8%80%E8%BD%AE%E6%95%99%E7%A8%8B/</id>
     <published>2022-01-10T14:55:28.000Z</published>
     <updated>2022-01-10T14:56:40.383Z</updated>
     
@@ -64,8 +90,8 @@
   
   <entry>
     <title>简析Unity有限状态机的实现方法与使用</title>
-    <link href="http://example.com/2022/01/09/%E7%AE%80%E6%9E%90Unity%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
-    <id>http://example.com/2022/01/09/%E7%AE%80%E6%9E%90Unity%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E4%BD%BF%E7%94%A8/</id>
+    <link href="https://karmotrine.fun/2022/01/09/%E7%AE%80%E6%9E%90Unity%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E4%BD%BF%E7%94%A8/"/>
+    <id>https://karmotrine.fun/2022/01/09/%E7%AE%80%E6%9E%90Unity%E6%9C%89%E9%99%90%E7%8A%B6%E6%80%81%E6%9C%BA%E7%9A%84%E5%AE%9E%E7%8E%B0%E6%96%B9%E6%B3%95%E4%B8%8E%E4%BD%BF%E7%94%A8/</id>
     <published>2022-01-09T14:58:15.000Z</published>
     <updated>2022-01-09T17:30:42.372Z</updated>
     
@@ -79,19 +105,19 @@
     
     
     
-    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/categories/Unity/"/>
     
     
-    <category term="教程" scheme="http://example.com/tags/%E6%95%99%E7%A8%8B/"/>
+    <category term="教程" scheme="https://karmotrine.fun/tags/%E6%95%99%E7%A8%8B/"/>
     
-    <category term="Unity" scheme="http://example.com/tags/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/tags/Unity/"/>
     
   </entry>
   
   <entry>
     <title>简析Unity射线检测的概念与应用</title>
-    <link href="http://example.com/2021/09/08/%E7%AE%80%E6%9E%90Unity%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BA%94%E7%94%A8/"/>
-    <id>http://example.com/2021/09/08/%E7%AE%80%E6%9E%90Unity%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BA%94%E7%94%A8/</id>
+    <link href="https://karmotrine.fun/2021/09/08/%E7%AE%80%E6%9E%90Unity%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BA%94%E7%94%A8/"/>
+    <id>https://karmotrine.fun/2021/09/08/%E7%AE%80%E6%9E%90Unity%E5%B0%84%E7%BA%BF%E6%A3%80%E6%B5%8B%E7%9A%84%E6%A6%82%E5%BF%B5%E4%B8%8E%E5%BA%94%E7%94%A8/</id>
     <published>2021-09-08T09:50:08.000Z</published>
     <updated>2022-01-07T11:37:58.327Z</updated>
     
@@ -105,19 +131,19 @@
     
     
     
-    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/categories/Unity/"/>
     
     
-    <category term="教程" scheme="http://example.com/tags/%E6%95%99%E7%A8%8B/"/>
+    <category term="教程" scheme="https://karmotrine.fun/tags/%E6%95%99%E7%A8%8B/"/>
     
-    <category term="Unity" scheme="http://example.com/tags/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/tags/Unity/"/>
     
   </entry>
   
   <entry>
     <title>Unity中如何设置游戏存档方法归纳</title>
-    <link href="http://example.com/2021/06/26/Unity%E4%B8%AD%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E6%B8%B8%E6%88%8F%E5%AD%98%E6%A1%A3%E6%96%B9%E6%B3%95%E5%BD%92%E7%BA%B3/"/>
-    <id>http://example.com/2021/06/26/Unity%E4%B8%AD%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E6%B8%B8%E6%88%8F%E5%AD%98%E6%A1%A3%E6%96%B9%E6%B3%95%E5%BD%92%E7%BA%B3/</id>
+    <link href="https://karmotrine.fun/2021/06/26/Unity%E4%B8%AD%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E6%B8%B8%E6%88%8F%E5%AD%98%E6%A1%A3%E6%96%B9%E6%B3%95%E5%BD%92%E7%BA%B3/"/>
+    <id>https://karmotrine.fun/2021/06/26/Unity%E4%B8%AD%E5%A6%82%E4%BD%95%E8%AE%BE%E7%BD%AE%E6%B8%B8%E6%88%8F%E5%AD%98%E6%A1%A3%E6%96%B9%E6%B3%95%E5%BD%92%E7%BA%B3/</id>
     <published>2021-06-26T03:42:20.000Z</published>
     <updated>2022-01-07T10:24:54.543Z</updated>
     
@@ -131,19 +157,19 @@
     
     
     
-    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/categories/Unity/"/>
     
     
-    <category term="教程" scheme="http://example.com/tags/%E6%95%99%E7%A8%8B/"/>
+    <category term="教程" scheme="https://karmotrine.fun/tags/%E6%95%99%E7%A8%8B/"/>
     
-    <category term="Unity" scheme="http://example.com/tags/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/tags/Unity/"/>
     
   </entry>
   
   <entry>
     <title>关于Unity协程函数的个人理解</title>
-    <link href="http://example.com/2021/04/11/%E5%85%B3%E4%BA%8EUnity%E5%8D%8F%E7%A8%8B%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/"/>
-    <id>http://example.com/2021/04/11/%E5%85%B3%E4%BA%8EUnity%E5%8D%8F%E7%A8%8B%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/</id>
+    <link href="https://karmotrine.fun/2021/04/11/%E5%85%B3%E4%BA%8EUnity%E5%8D%8F%E7%A8%8B%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/"/>
+    <id>https://karmotrine.fun/2021/04/11/%E5%85%B3%E4%BA%8EUnity%E5%8D%8F%E7%A8%8B%E5%87%BD%E6%95%B0%E7%9A%84%E4%B8%AA%E4%BA%BA%E7%90%86%E8%A7%A3/</id>
     <published>2021-04-11T15:03:06.000Z</published>
     <updated>2022-01-07T11:30:50.085Z</updated>
     
@@ -157,19 +183,19 @@
     
     
     
-    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/categories/Unity/"/>
     
     
-    <category term="教程" scheme="http://example.com/tags/%E6%95%99%E7%A8%8B/"/>
+    <category term="教程" scheme="https://karmotrine.fun/tags/%E6%95%99%E7%A8%8B/"/>
     
-    <category term="Unity" scheme="http://example.com/tags/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/tags/Unity/"/>
     
   </entry>
   
   <entry>
     <title>在Unity中不使用任何插件制作角色对话框系统</title>
-    <link href="http://example.com/2021/04/08/%E5%9C%A8Unity%E4%B8%AD%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%BB%BB%E4%BD%95%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%E8%A7%92%E8%89%B2%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%B3%BB%E7%BB%9F/"/>
-    <id>http://example.com/2021/04/08/%E5%9C%A8Unity%E4%B8%AD%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%BB%BB%E4%BD%95%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%E8%A7%92%E8%89%B2%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%B3%BB%E7%BB%9F/</id>
+    <link href="https://karmotrine.fun/2021/04/08/%E5%9C%A8Unity%E4%B8%AD%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%BB%BB%E4%BD%95%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%E8%A7%92%E8%89%B2%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%B3%BB%E7%BB%9F/"/>
+    <id>https://karmotrine.fun/2021/04/08/%E5%9C%A8Unity%E4%B8%AD%E4%B8%8D%E4%BD%BF%E7%94%A8%E4%BB%BB%E4%BD%95%E6%8F%92%E4%BB%B6%E5%88%B6%E4%BD%9C%E8%A7%92%E8%89%B2%E5%AF%B9%E8%AF%9D%E6%A1%86%E7%B3%BB%E7%BB%9F/</id>
     <published>2021-04-08T13:42:08.000Z</published>
     <updated>2022-01-07T11:42:13.905Z</updated>
     
@@ -183,12 +209,12 @@
     
     
     
-    <category term="Unity" scheme="http://example.com/categories/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/categories/Unity/"/>
     
     
-    <category term="教程" scheme="http://example.com/tags/%E6%95%99%E7%A8%8B/"/>
+    <category term="教程" scheme="https://karmotrine.fun/tags/%E6%95%99%E7%A8%8B/"/>
     
-    <category term="Unity" scheme="http://example.com/tags/Unity/"/>
+    <category term="Unity" scheme="https://karmotrine.fun/tags/Unity/"/>
     
   </entry>
   
