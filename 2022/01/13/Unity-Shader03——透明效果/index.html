@@ -1,0 +1,260 @@
+<!DOCTYPE html><html lang="ch"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="theme-color" content="#0078E7"><meta name="author" content="Karmotrine"><meta name="copyright" content="Karmotrine"><meta name="generator" content="Hexo 6.0.0"><meta name="theme" content="hexo-theme-yun"><title>Unity Shader03——透明效果 | Utopia</title><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@900&amp;display=swap" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/star-markdown-css@0.1.25/dist/yun/yun-markdown.min.css"><script src="//at.alicdn.com/t/font_1140697_dxory92pb0h.js" async></script><script src="https://cdn.jsdelivr.net/npm/scrollreveal/dist/scrollreveal.min.js" defer></script><script>function initScrollReveal() {
+  [".post-card",".post-content img"].forEach((target)=> {
+    ScrollReveal().reveal(target);
+  })
+}
+document.addEventListener("DOMContentLoaded", initScrollReveal);
+document.addEventListener("pjax:success", initScrollReveal);
+</script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script><link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.css"><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/copy-tex.min.js"></script><script defer src="https://cdn.jsdelivr.net/npm/katex@latest/dist/contrib/auto-render.min.js"></script><script>document.addEventListener("DOMContentLoaded", () => {
+  Yun.utils.renderKatex();
+});</script><link class="aplayer-style-marker" rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script class="aplayer-script-marker" src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" defer></script><script class="meting-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js" defer></script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
+    const Yun = window.Yun || {};
+    window.CONFIG = {"hostname":"karmotrine.fun","root":"/","title":["し","い","な","の","博","客"],"version":"1.7.0","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><link rel="alternate" href="/atom.xml" title="Utopia" type="application/atom+xml"><meta name="description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 透明效果概念和其它概念与渲染过程当一个物体被渲染到屏幕上时，每个片元除了颜色和深度外还有透明度这个属性。透明度为1表示完全不透明，为0表示完全不显示。 深度缓冲：根据深度缓存中的值来判断一个片元距离摄像机的距离。当渲染另一片元时，会将它的深度值和意见存在于深度缓冲的值比较（深度测试），如果">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity Shader03——透明效果">
+<meta property="og:url" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/index.html">
+<meta property="og:site_name" content="Utopia">
+<meta property="og:description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 透明效果概念和其它概念与渲染过程当一个物体被渲染到屏幕上时，每个片元除了颜色和深度外还有透明度这个属性。透明度为1表示完全不透明，为0表示完全不显示。 深度缓冲：根据深度缓存中的值来判断一个片元距离摄像机的距离。当渲染另一片元时，会将它的深度值和意见存在于深度缓冲的值比较（深度测试），如果">
+<meta property="og:locale">
+<meta property="og:image" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95.png">
+<meta property="og:image" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88.png">
+<meta property="og:image" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/%E5%8F%8C%E9%9D%A2%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95.png">
+<meta property="og:image" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/%E5%8F%8C%E5%90%91%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88.png">
+<meta property="article:published_time" content="2022-01-13T03:14:07.000Z">
+<meta property="article:modified_time" content="2022-01-13T10:12:18.597Z">
+<meta property="article:author" content="Karmotrine">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="Shader">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Karmotrine"><img width="96" loading="lazy" src="https://portrait.gitee.com/uploads/avatars/user/2943/8831424_karmotrine_1616074181.png!avatar100" alt="Karmotrine"><span class="site-author-status" title="不想上学">😭</span></a><div class="site-author-name"><a href="/about/">Karmotrine</a></div><span class="site-name">Utopia</span><sub class="site-subtitle">Kyrie eleison.</sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">9</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">4</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=657493712&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/karm0tr1ne" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:657493712@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/191503773/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1376395329" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/karmotrine-32" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/85367843" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C%E6%A6%82%E5%BF%B5%E5%92%8C%E5%85%B6%E5%AE%83"><span class="toc-number">2.</span> <span class="toc-text">透明效果概念和其它</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5%E4%B8%8E%E6%B8%B2%E6%9F%93%E8%BF%87%E7%A8%8B"><span class="toc-number">2.1.</span> <span class="toc-text">概念与渲染过程</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95"><span class="toc-number">2.1.1.</span> <span class="toc-text">透明度测试</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88"><span class="toc-number">2.1.2.</span> <span class="toc-text">透明度混合</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E9%A1%BA%E5%BA%8F"><span class="toc-number">2.2.</span> <span class="toc-text">渲染顺序</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Unity%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="toc-number">2.2.1.</span> <span class="toc-text">Unity解决方案</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.</span> <span class="toc-text">透明度测试实践</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.</span> <span class="toc-text">透明度混合实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%80%E5%90%AF%E6%B7%B1%E5%BA%A6%E5%86%99%E5%85%A5%E7%9A%84%E5%8D%8A%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C"><span class="toc-number">4.1.</span> <span class="toc-text">开启深度写入的半透明效果</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%8C%E9%9D%A2%E6%B8%B2%E6%9F%93%E7%9A%84%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C"><span class="toc-number">5.</span> <span class="toc-text">双面渲染的透明效果</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95%E7%9A%84%E5%8F%8C%E9%9D%A2%E6%B8%B2%E6%9F%93"><span class="toc-number">5.1.</span> <span class="toc-text">透明度测试的双面渲染</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88%E7%9A%84%E5%8F%8C%E9%9D%A2%E6%B8%B2%E6%9F%93"><span class="toc-number">5.2.</span> <span class="toc-text">透明度混合的双面渲染</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Karmotrine"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Utopia"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Unity Shader03——透明效果</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2022-01-13 11:14:07" itemprop="dateCreated datePublished" datetime="2022-01-13T11:14:07+08:00">2022-01-13</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">2.3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">9m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/Shader/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Shader</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a><a class="tag-item" href="/tags/Shader/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Shader</span></a></span></div><div class="post-author"><div class="author-avatar"><img src="https://www.gravatar.com/avatar/6c9385ec68c559cae4e1d7a3e3b483c0?s=20&amp;d=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FYunYouJun%2Fcdn%2Fimg%2Favatar%2Fnone.jpg"></div><span class="author-name">Karmotrine.</span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=858520&auto=1&height=66"></iframe>
+
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！<del>（虽然溜一遍下来发现好像也能看</del></p>
+<h2 id="透明效果概念和其它"><a href="#透明效果概念和其它" class="headerlink" title="透明效果概念和其它"></a>透明效果概念和其它</h2><h3 id="概念与渲染过程"><a href="#概念与渲染过程" class="headerlink" title="概念与渲染过程"></a>概念与渲染过程</h3><p>当一个物体被渲染到屏幕上时，每个片元除了颜色和深度外还有透明度这个属性。透明度为1表示完全不透明，为0表示完全不显示。</p>
+<p><strong>深度缓冲</strong>：根据深度缓存中的值来判断一个片元距离摄像机的距离。当渲染另一片元时，<em>会将它的深度值和意见存在于深度缓冲的值比较</em>（<strong>深度测试</strong>），如果他的值距离摄像机更远，就不会被渲染（因为前面有物体挡住了它）；如果他的值距离摄像机更近，就会覆盖掉此时颜色缓冲中的像素值，<em>并把深度值更新到深度缓冲中</em>（<strong>深度写入</strong>）。</p>
+<p>有两种方法实现透明效果，分别是<strong>透明度测试</strong>和<strong>透明度混合</strong>。</p>
+<h4 id="透明度测试"><a href="#透明度测试" class="headerlink" title="透明度测试"></a>透明度测试</h4><p>采用极端的机制，只要一个片元透明度不满足条件（小于一个阈值）就舍弃不渲染，如果满足就按照普通的不透明物体处理（进行深度测试和写入）。虽然简单但是效果极端（不是完全透明就是完全不透明），做不到半透明的效果。需要打开深度写入。</p>
+<h4 id="透明度混合"><a href="#透明度混合" class="headerlink" title="透明度混合"></a>透明度混合</h4><p>使用当前片元的透明度作为混合因子，与已经储存在颜色缓冲中的颜色缓冲值混合。但是执行该操作需要关闭深度写入，未关闭深度测试（如果不关闭，一个半透明表面背后表面本来可以被我们看到，但是由于深度测试判断结果时半透明表面更近，这样背后表面会被剔除）。对于透明度混合，深度缓冲是可读的。</p>
+<h3 id="渲染顺序"><a href="#渲染顺序" class="headerlink" title="渲染顺序"></a>渲染顺序</h3><p>渲染顺序对于透明效果十分重要，特别是关闭了深度写入时。当先渲染近处的片元再渲染远处时，因为深度缓冲区没有任何有效数据，因此直接写入颜色缓冲，但是不会修改深度缓冲（未开启深度写入）。这样当渲染远处的时候进行深度测试，由于深度缓存啥也没有，所以会直接覆盖近处的颜色，从而导致错误。所以无论是半透明还是透明物体之间都需要符合一定渲染顺序。</p>
+<p>目前的常用渲染方法为：</p>
+<p>1.先渲染所有不透明物体并开启它们的深度测试和深度写入；</p>
+<p>2.把半透明物体按距离排序，从后往前渲染透明物体，并开启深度测试，关闭深度写入。</p>
+<p>但是问题依然没有解决，当几个物体交错放时，A物体一半在B物体前，一半在后面，就很难使用”从后往前“这个宽泛的说法。</p>
+<p>针对上面的问题，Unity是这样解决的：</p>
+<h4 id="Unity解决方案"><a href="#Unity解决方案" class="headerlink" title="Unity解决方案"></a>Unity解决方案</h4><p>Unity提供了渲染队列这一说法，采用SubShader中的<strong>Queue</strong>标签决定模型归于哪个渲染队列，队列索引号越小越早被渲染。</p>
+<p><strong>Background</strong>：索引号1000，用来渲染那些需要绘制再背景上的物体</p>
+<p><strong>Geometry</strong>：索引号2000，默认渲染队列，不透明物体使用该序列</p>
+<p><strong>AlphaTest</strong>：索引号2450，需要透明度测试的物体选用该队列</p>
+<p><strong>Transparent</strong>：索引号3000，使用透明度混合的物体选用该队列</p>
+<p><strong>Overlay</strong>：索引号4000，用于实现一些叠加效果，任何需要在最后渲染的物体使用该队列</p>
+<p>标签具体实现方法：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">SubShader&#123;
+Tags&#123;&quot;Queue&quot;&#x3D;&quot;里面写标签&quot;&#125;
+Pass&#123;
+	......
+&#125;
+&#125;</code></pre>
+
+<h2 id="透明度测试实践"><a href="#透明度测试实践" class="headerlink" title="透明度测试实践"></a>透明度测试实践</h2><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader&quot;Custom&#x2F;Alpha Test&quot;&#123;
+Properties&#123;
+    _Color(&quot;Main Tint&quot;,Color)&#x3D;(1,1,1,1)
+    _MainTex(&quot;Main Tex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;
+    _CutOff(&quot;Alpha Cutoff&quot;,Range(0,1))&#x3D;0.5
+&#125;
+SubShader&#123;
+    Tags&#123;&quot;Queue&quot;&#x3D;&quot;AlphaTest&quot; &quot;IgnoreProjector&quot;&#x3D;&quot;True&quot; &quot;RenderType&quot;&#x3D;&quot;TransparentCutout&quot;&#125;
+	&#x2F;&#x2F;&quot;TransparentCutout&quot;标签指这是个使用了透明度的Shader
+	&#x2F;&#x2F;True表明Shader不会受到投影器(Projector)的影响
+    Pass&#123;
+        Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+        CGPROGRAM
+
+        #pragma vertex vert
+        #pragma fragment frag
+
+        #include &quot;Lighting.cginc&quot;
+
+        fixed4 _Color;
+        sampler2D _MainTex;
+        float4 _MainTex_ST;
+        fixed _CutOff;
+        &#x2F;&#x2F;进行测试的阈值
+
+        struct a2v&#123;
+            float4 vertex:POSITION;
+            float3 normal:NORMAL;
+            float4 texcoord:TEXCOORD0;
+        &#125;;
+
+        struct v2f&#123;
+            float4 pos:SV_POSITION;
+            float3 worldNormal:TEXCOORD0;
+            float3 worldPos:TEXCOORD1;
+            float2 uv:TEXCOORD2;
+        &#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+            o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+            o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+            fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+            fixed4 texColor&#x3D;tex2D(_MainTex,i.uv);
+            clip(texColor.a-_CutOff);
+            &#x2F;&#x2F;测试是不是负数来剔除片元
+            fixed3 albedo&#x3D;texColor.rgb*_Color.rgb;
+            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
+            fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));
+            return fixed4(ambient+diffuse,1.0);
+        &#125;
+        ENDCG
+    &#125;
+&#125;
+        Fallback &quot;Transparent&#x2F;Cutout&#x2F;VertexLit&quot;
+        &#x2F;&#x2F;换了个回调，保证使用透明度测试的物体可以正确向其它物体投射投影
+&#125;</code></pre>
+
+<p>**clip(float4/3/2/1 x)**：如果x内任何一个分量是负数则舍弃当前像素输出颜色</p>
+<p>结果很极端：要么完全透明要么完全不透明，而且边缘处存在锯齿，参差不齐（由于透明度的变化精度问题）</p>
+<p><img src="%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95.png" alt="透明度测试" loading="lazy"></p>
+<h2 id="透明度混合实践"><a href="#透明度混合实践" class="headerlink" title="透明度混合实践"></a>透明度混合实践</h2><p>Unity提供混合命令Blend：</p>
+<p><strong>Blend Off</strong>：关闭混合</p>
+<p><strong>Blend SrcFactor DstFactor</strong>：开启混合并设置混合因子，计算公式如下：</p>
+<p>$$DstColor_{new}=SrcAlpha*SrcColor+(1-SrcAlpha)*DstColor_{old}$$</p>
+<p><strong>Blend SrcFactor DstFactor,SrcFactorA DstFactorA</strong>：和上面一样，但计算公式变成：</p>
+<p>$$O_{rgb}=SrcFactor<em>S_{rgb}+DstFactor</em>D_{rgb}$$</p>
+<p>$$O_a=SrcFactorA<em>S_a+DstFactorA</em>D_a$$</p>
+<p>通过两个公式分别计算新颜色的rgb和a值</p>
+<p><strong>BlendOp BlendOperation</strong>：使用BlendOperation对它们进行其它操作</p>
+<p>（还有很多ShaderLab混合命令，这里就不说了）</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;AlphaBlend&quot;
+&#123;
+    Properties
+    &#123;
+        _Color (&quot;Main Tint&quot;, Color) &#x3D; (1,1,1,1)
+        _MainTex (&quot;Main Tex&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;
+        _AlphaScale(&quot;Alpha Scale&quot;,Range(0,1))&#x3D;1
+        &#x2F;&#x2F;控制物体的整体透明度
+    &#125;
+    SubShader&#123;
+    Tags&#123;&quot;Queue&quot;&#x3D;&quot;Transparent&quot; &quot;IgnoreProjector&quot;&#x3D;&quot;True&quot; &quot;RenderType&quot;&#x3D;&quot;Transparent&quot;&#125;
+	&#x2F;&#x2F;因为是透明度混合，所以是Transparent
+    Pass&#123;
+        Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+
+        ZWrite Off
+        &#x2F;&#x2F;关闭深度写入
+        Blend SrcAlpha OneMinusSrcAlpha
+        &#x2F;&#x2F;原颜色和1-原颜色
+        CGPROGRAM
+
+        #pragma vertex vert
+        #pragma fragment frag
+
+        #include &quot;Lighting.cginc&quot;
+
+        fixed4 _Color;
+        sampler2D _MainTex;
+        float4 _MainTex_ST;
+        fixed _AlphaScale;
+
+        struct a2v&#123;
+            float4 vertex:POSITION;
+            float3 normal:NORMAL;
+            float4 texcoord:TEXCOORD0;
+        &#125;;
+
+        struct v2f&#123;
+            float4 pos:SV_POSITION;
+            float3 worldNormal:TEXCOORD0;
+            float3 worldPos:TEXCOORD1;
+            float2 uv:TEXCOORD2;
+        &#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+            o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+            o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+            fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+            fixed4 texColor&#x3D;tex2D(_MainTex,i.uv);
+            fixed3 albedo&#x3D;texColor.rgb*_Color.rgb;
+            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
+            fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));
+            return fixed4(ambient+diffuse,texColor.a*_AlphaScale);
+            &#x2F;&#x2F;返回的不是1，而是透明通道乘以材质参数
+        &#125;
+        ENDCG
+    &#125;
+&#125;
+        Fallback &quot;Transparent&#x2F;VertexLit&quot;
+&#125;</code></pre>
+
+<p><img src="%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88.png" alt="透明度混合" loading="lazy"></p>
+<p>但由于关闭了深度写入，在相互交叉时往往会得到错误的效果（后面的部分也能看见）</p>
+<h3 id="开启深度写入的半透明效果"><a href="#开启深度写入的半透明效果" class="headerlink" title="开启深度写入的半透明效果"></a>开启深度写入的半透明效果</h3><p>为了针对上述错误，我们可以使用<strong>两个Pass</strong>：第一个开启深度写入而不输出颜色，目的是将该模型的深度值写入深度缓冲；第二个才是正常透明度融合。</p>
+<p>只要在上面代码加上：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Pass&#123;
+	ZWrite On
+	ColorMask 0
+	&#x2F;&#x2F;用于设置颜色通道的写掩码，0代表不输出任何颜色
+	&#x2F;&#x2F;这样就只需写入深度缓存即可
+&#125;</code></pre>
+
+<h2 id="双面渲染的透明效果"><a href="#双面渲染的透明效果" class="headerlink" title="双面渲染的透明效果"></a>双面渲染的透明效果</h2><p>可以通过<strong>Cull</strong>指令控制剔除哪个面的渲染图元：</p>
+<p><strong>Cull Back</strong>：剔除背对摄像机的图元</p>
+<p><strong>Cull Front</strong>：剔除正对摄像机的图元</p>
+<p><strong>Cull Off</strong>：关闭剔除功能，全会被渲染</p>
+<h3 id="透明度测试的双面渲染"><a href="#透明度测试的双面渲染" class="headerlink" title="透明度测试的双面渲染"></a>透明度测试的双面渲染</h3><p>因为图元被直接舍弃，所以最好的方法就是关闭剔除：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Pass&#123;
+	Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+	Cull Off
+	&#x2F;&#x2F;后面一样
+&#125;</code></pre>
+
+<p><img src="%E5%8F%8C%E9%9D%A2%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95.png" alt="双面透明度测试" loading="lazy"></p>
+<h3 id="透明度混合的双面渲染"><a href="#透明度混合的双面渲染" class="headerlink" title="透明度混合的双面渲染"></a>透明度混合的双面渲染</h3><p>因为透明度混合方法注重渲染的顺序，直接关闭剔除功能又不打开深度写入就会无法保证正面和背面的渲染顺序。所以最好的办法是分成两个Pass，第一个剔除正面，第二个剔除背面。由于Unity顺序执行，所以先渲染背面再渲染正面，这就保证了渲染顺序的正确性。</p>
+<p>代码如下：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Pass&#123;
+	Tags&#x3D;&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+	Cull Front
+	......
+	&#x2F;&#x2F;和之前一样的代码
+&#125;
+Pass&#123;
+	Tags&#x3D;&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+	Cull Back
+	......
+	&#x2F;&#x2F;和之前一样的代码
+&#125;
+&#x2F;&#x2F;其它都一样</code></pre>
+
+<p><img src="%E5%8F%8C%E5%90%91%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88.png" alt="双向透明度混合" loading="lazy"></p>
+</div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Karmotrine.</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/" title="Unity Shader03——透明效果">https://karmotrine.fun/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/01/11/Unity-Shader02%E2%80%94%E2%80%94%E7%BA%B9%E7%90%86/" rel="next" title="Unity Shader02——纹理"><span class="post-nav-text">Unity Shader02——纹理</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>若您想及时得到回复提醒，建议跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Karmotrine</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.0.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.7.0</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+  setTimeout(blog_live_time, 1000);
+  const start = new Date('2022-01-07T00:00:00');
+  const now = new Date();
+  const timeDiff = (now.getTime() - start.getTime());
+  const msPerMinute = 60 * 1000;
+  const msPerHour = 60 * msPerMinute;
+  const msPerDay = 24 * msPerHour;
+  const passDay = Math.floor(timeDiff / msPerDay);
+  const passHour = Math.floor((timeDiff % msPerDay) / 60 / 60 / 1000);
+  const passMinute = Math.floor((timeDiff % msPerHour) / 60 / 1000);
+  const passSecond = Math.floor((timeDiff % msPerMinute) / 1000);
+  display_live_time.innerHTML = ` ${passDay} 天 ${passHour} 小时 ${passMinute} 分 ${passSecond} 秒`;
+}
+blog_live_time();
+</script></div></footer><a class="hty-icon-button" id="back-to-top" aria-label="back-to-top" href="#"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-up-s-line"></use></svg><svg class="progress-circle-container" viewBox="0 0 100 100"><circle class="progress-circle" id="progressCircle" cx="50" cy="50" r="48" fill="none" stroke="#0078E7" stroke-width="2" stroke-linecap="round"></circle></svg></a><div class="aplayer no-destroy" id="aplayer" data-id="7226373375" data-server="netease" data-type="playlist" data-fixed="true" data-theme="#0078E7" data-loop="all" data-order="list" data-preload="auto" data-volume="0.7" data-mutex data-lrctype="0" data-listfolded data-listmaxheight="340px" data-storagename="metingjs"></div></div></body></html>
