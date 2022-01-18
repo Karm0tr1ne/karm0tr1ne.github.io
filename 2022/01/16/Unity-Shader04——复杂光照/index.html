@@ -10,23 +10,25 @@ document.addEventListener("pjax:success", initScrollReveal);
 });</script><link class="aplayer-style-marker" rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.css"><script class="aplayer-script-marker" src="https://cdn.jsdelivr.net/npm/aplayer@latest/dist/APlayer.min.js" defer></script><script class="meting-script-marker" src="https://cdn.jsdelivr.net/npm/meting@1/dist/Meting.min.js" defer></script><link id="light-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism.css" media="(prefers-color-scheme: light)"><link id="dark-prism-css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@latest/themes/prism-tomorrow.css" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/png" href="/favicon.ico"><link rel="mask-icon" href="/favicon.ico" color="#0078E7"><link rel="preload" href="/css/hexo-theme-yun.css" as="style"><link rel="preload" href="/js/utils.js" as="script"><link rel="preload" href="/js/hexo-theme-yun.js" as="script"><link rel="prefetch" href="/js/sidebar.js" as="script"><link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin><script id="yun-config">
     const Yun = window.Yun || {};
     window.CONFIG = {"hostname":"karmotrine.fun","root":"/","title":["し","い","な","の","博","客"],"version":"1.7.0","mode":"auto","copycode":true,"page":{"isPost":true},"i18n":{"placeholder":"搜索...","empty":"找不到您查询的内容: ${query}","hits":"找到 ${hits} 条结果","hits_time":"找到 ${hits} 条结果（用时 ${time} 毫秒）"},"anonymous_image":"https://cdn.jsdelivr.net/gh/YunYouJun/cdn/img/avatar/none.jpg","say":{"api":"https://v1.hitokoto.cn","hitokoto":true},"fireworks":{"colors":["102, 167, 221","62, 131, 225","33, 78, 194"]}};
-  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><link rel="alternate" href="/atom.xml" title="Utopia" type="application/atom+xml"><meta name="description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 Unity的渲染路径概念渲染路径决定光照是如何应用到Unity Shader里的。只有为每个Pass指定正确的渲染路径才能正确执行光照计算。Unity的渲染路径有三种：前向渲染路径、延迟渲染路径和顶点照明渲染路径。每个摄像机可以通过修改Camera组件内的Rendering Path决定该">
+  </script><link rel="stylesheet" href="/css/hexo-theme-yun.css"><script src="/js/utils.js"></script><script src="/js/hexo-theme-yun.js"></script><link rel="alternate" href="/atom.xml" title="Utopia" type="application/atom+xml"><meta name="description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 Unity的渲染路径概念渲染路径决定光照是如何应用到Unity Shader里的。只有为每个Pass指定正确的渲染路径才能正确执行光照计算。Unity的渲染路径有三种：前向渲染路径、延迟渲染路径和顶点照明渲染路径。每个摄像机可以通过修改Camera组件内的Rendering Path决">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity Shader04——复杂光照">
 <meta property="og:url" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/index.html">
 <meta property="og:site_name" content="Utopia">
-<meta property="og:description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 Unity的渲染路径概念渲染路径决定光照是如何应用到Unity Shader里的。只有为每个Pass指定正确的渲染路径才能正确执行光照计算。Unity的渲染路径有三种：前向渲染路径、延迟渲染路径和顶点照明渲染路径。每个摄像机可以通过修改Camera组件内的Rendering Path决定该">
+<meta property="og:description" content="前言这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！（虽然溜一遍下来发现好像也能看 Unity的渲染路径概念渲染路径决定光照是如何应用到Unity Shader里的。只有为每个Pass指定正确的渲染路径才能正确执行光照计算。Unity的渲染路径有三种：前向渲染路径、延迟渲染路径和顶点照明渲染路径。每个摄像机可以通过修改Camera组件内的Rendering Path决">
 <meta property="og:locale">
 <meta property="og:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/%E8%A1%A8%E4%B8%80.png">
 <meta property="og:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/%E8%A1%A8%E4%BA%8C.png">
 <meta property="og:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/%E8%A1%A8%E4%B8%89.png">
 <meta property="article:published_time" content="2022-01-16T09:07:41.000Z">
-<meta property="article:modified_time" content="2022-01-16T13:48:13.022Z">
+<meta property="article:modified_time" content="2022-01-18T04:13:48.234Z">
 <meta property="article:author" content="Karmotrine">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="Shader">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/%E8%A1%A8%E4%B8%80.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Karmotrine"><img width="96" loading="lazy" src="https://portrait.gitee.com/uploads/avatars/user/2943/8831424_karmotrine_1616074181.png!avatar100" alt="Karmotrine"><span class="site-author-status" title="不想上学">😭</span></a><div class="site-author-name"><a href="/about/">Karmotrine</a></div><span class="site-name">Utopia</span><sub class="site-subtitle">Kyrie eleison.</sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">4</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=657493712&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/karm0tr1ne" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:657493712@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/191503773/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1376395329" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/karmotrine-32" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/85367843" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.</span> <span class="toc-text">Unity的渲染路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.2.</span> <span class="toc-text">前向渲染路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B6%E7%82%B9%E7%85%A7%E6%98%8E%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.3.</span> <span class="toc-text">顶点照明渲染路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.4.</span> <span class="toc-text">延迟渲染路径</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E5%85%89%E6%BA%90%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.</span> <span class="toc-text">Unity的光源类型与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%8C%E5%85%89"><span class="toc-number">3.1.</span> <span class="toc-text">平行光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%85%89%E6%BA%90"><span class="toc-number">3.2.</span> <span class="toc-text">点光源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%85%89%E7%81%AF"><span class="toc-number">3.3.</span> <span class="toc-text">聚光灯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.4.</span> <span class="toc-text">前向渲染路径实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E8%A1%B0%E5%87%8F%E7%BA%B9%E7%90%86%E9%87%87%E6%A0%B7%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.5.</span> <span class="toc-text">光线衰减纹理采样原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E9%98%B4%E5%BD%B1%E4%B8%8E%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.</span> <span class="toc-text">Unity的阴影与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E4%BD%93%E7%9A%84%E9%98%B4%E5%BD%B1%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.1.</span> <span class="toc-text">不透明物体的阴影实践</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Karmotrine"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Utopia"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Unity Shader04——复杂光照</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2022-01-16 17:07:41" itemprop="dateCreated datePublished" datetime="2022-01-16T17:07:41+08:00">2022-01-16</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">3k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">11m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/Shader/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Shader</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a><a class="tag-item" href="/tags/Shader/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Shader</span></a></span></div><div class="post-author"><div class="author-avatar"><img src="https://www.gravatar.com/avatar/6c9385ec68c559cae4e1d7a3e3b483c0?s=20&amp;d=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FYunYouJun%2Fcdn%2Fimg%2Favatar%2Fnone.jpg"></div><span class="author-name">Karmotrine.</span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1903397110&auto=1&height=66"></iframe>
+<meta name="twitter:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/%E8%A1%A8%E4%B8%80.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Karmotrine"><img width="96" loading="lazy" src="https://portrait.gitee.com/uploads/avatars/user/2943/8831424_karmotrine_1616074181.png!avatar100" alt="Karmotrine"><span class="site-author-status" title="不想上学">😭</span></a><div class="site-author-name"><a href="/about/">Karmotrine</a></div><span class="site-name">Utopia</span><sub class="site-subtitle">Kyrie eleison.</sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">4</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=657493712&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/karm0tr1ne" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:657493712@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/191503773/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1376395329" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/karmotrine-32" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/85367843" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.</span> <span class="toc-text">Unity的渲染路径</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.2.</span> <span class="toc-text">前向渲染路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%A1%B6%E7%82%B9%E7%85%A7%E6%98%8E%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.3.</span> <span class="toc-text">顶点照明渲染路径</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BB%B6%E8%BF%9F%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84"><span class="toc-number">2.4.</span> <span class="toc-text">延迟渲染路径</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E5%85%89%E6%BA%90%E7%B1%BB%E5%9E%8B%E4%B8%8E%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.</span> <span class="toc-text">Unity的光源类型与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%B9%B3%E8%A1%8C%E5%85%89"><span class="toc-number">3.1.</span> <span class="toc-text">平行光</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%82%B9%E5%85%89%E6%BA%90"><span class="toc-number">3.2.</span> <span class="toc-text">点光源</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%81%9A%E5%85%89%E7%81%AF"><span class="toc-number">3.3.</span> <span class="toc-text">聚光灯</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%89%8D%E5%90%91%E6%B8%B2%E6%9F%93%E8%B7%AF%E5%BE%84%E5%AE%9E%E8%B7%B5"><span class="toc-number">3.4.</span> <span class="toc-text">前向渲染路径实践</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%89%E7%BA%BF%E8%A1%B0%E5%87%8F%E7%BA%B9%E7%90%86%E9%87%87%E6%A0%B7%E5%8E%9F%E5%9B%A0"><span class="toc-number">3.5.</span> <span class="toc-text">光线衰减纹理采样原因</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Unity%E7%9A%84%E9%98%B4%E5%BD%B1%E4%B8%8E%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.</span> <span class="toc-text">Unity的阴影与实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%8D%E9%80%8F%E6%98%8E%E7%89%A9%E4%BD%93%E7%9A%84%E9%98%B4%E5%BD%B1%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.1.</span> <span class="toc-text">不透明物体的阴影实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E7%89%A9%E4%BD%93%E6%8A%95%E5%B0%84%E9%98%B4%E5%BD%B1"><span class="toc-number">4.1.1.</span> <span class="toc-text">让物体投射阴影</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E8%AE%A9%E7%89%A9%E4%BD%93%E6%8E%A5%E6%94%B6%E9%98%B4%E5%BD%B1"><span class="toc-number">4.1.2.</span> <span class="toc-text">让物体接收阴影</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BB%9F%E4%B8%80%E7%AE%A1%E7%90%86%E5%85%89%E7%85%A7%E8%A1%B0%E5%87%8F%E5%92%8C%E9%98%B4%E5%BD%B1"><span class="toc-number">4.2.</span> <span class="toc-text">统一管理光照衰减和阴影</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E7%89%A9%E4%BD%93%E7%9A%84%E9%98%B4%E5%BD%B1"><span class="toc-number">4.3.</span> <span class="toc-text">透明度物体的阴影</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B5%8B%E8%AF%95%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.3.1.</span> <span class="toc-text">透明度测试实践</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E9%80%8F%E6%98%8E%E5%BA%A6%E6%B7%B7%E5%90%88%E5%AE%9E%E8%B7%B5"><span class="toc-number">4.3.2.</span> <span class="toc-text">透明度混合实践</span></a></li></ol></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Karmotrine"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Utopia"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Unity Shader04——复杂光照</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2022-01-16 17:07:41" itemprop="dateCreated datePublished" datetime="2022-01-16T17:07:41+08:00">2022-01-16</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2022-01-18 12:13:48" itemprop="dateModified" datetime="2022-01-18T12:13:48+08:00">2022-01-18</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">5.7k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">25m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/Shader/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Shader</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a><a class="tag-item" href="/tags/Shader/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Shader</span></a></span></div><div class="post-author"><div class="author-avatar"><img src="https://www.gravatar.com/avatar/6c9385ec68c559cae4e1d7a3e3b483c0?s=20&amp;d=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FYunYouJun%2Fcdn%2Fimg%2Favatar%2Fnone.jpg"></div><span class="author-name">Karmotrine.</span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1903397110&auto=1&height=66"></iframe>
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1903397110&auto=1&height=66"></iframe>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！<del>（虽然溜一遍下来发现好像也能看</del></p>
 <h2 id="Unity的渲染路径"><a href="#Unity的渲染路径" class="headerlink" title="Unity的渲染路径"></a>Unity的渲染路径</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p><strong>渲染路径</strong>决定光照是如何应用到Unity Shader里的。只有为每个Pass指定正确的渲染路径才能正确执行光照计算。Unity的渲染路径有三种：前向渲染路径、延迟渲染路径和顶点照明渲染路径。每个摄像机可以通过修改Camera组件内的Rendering Path决定该摄像机对光照的渲染路径。如果没有设置，摄像机会遵从Unity设置的渲染路径（即前向渲染路径）。</p>
@@ -170,30 +172,30 @@ document.addEventListener("pjax:success", initScrollReveal);
                 fixed3 worldNormal&#x3D;normalize(i.worldNormal);
                 #ifdef USING_DIRECTIONAL_LIGHT
                 &#x2F;&#x2F;如果处理的光照类型是平行光
-					fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz);
-					&#x2F;&#x2F;就直接是
-				#else
-					fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz);
-					&#x2F;&#x2F;不然就要用这个位置减去世界空间下的顶点位置
-				#endif
+                    fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz);
+                    &#x2F;&#x2F;就直接是
+                #else
+                    fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz);
+                    &#x2F;&#x2F;不然就要用这个位置减去世界空间下的顶点位置
+                #endif
                 fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));
                 fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);
                 fixed3 halfDir&#x3D;normalize(worldLightDir+viewDir);
                 fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(max(0,dot(worldNormal,halfDir)),_Gloss);
                 #ifdef USING_DIRECTIONAL_LIGHT
-					fixed atten &#x3D; 1.0;
-				#else
-					#if defined (POINT)
-				        float3 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1)).xyz;
-				        fixed atten &#x3D; tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
-				        &#x2F;&#x2F;采样原因如下
-				    #elif defined (SPOT)
-				        float4 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1));
-				        fixed atten &#x3D; (lightCoord.z &gt; 0) * tex2D(_LightTexture0, lightCoord.xy &#x2F; lightCoord.w + 0.5).w * tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
-				    #else
-				        fixed atten &#x3D; 1.0;
-				    #endif
-				#endif
+                    fixed atten &#x3D; 1.0;
+                #else
+                    #if defined (POINT)
+                        float3 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1)).xyz;
+                        fixed atten &#x3D; tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+                        &#x2F;&#x2F;采样原因如下
+                    #elif defined (SPOT)
+                        float4 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1));
+                        fixed atten &#x3D; (lightCoord.z &gt; 0) * tex2D(_LightTexture0, lightCoord.xy &#x2F; lightCoord.w + 0.5).w * tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+                    #else
+                        fixed atten &#x3D; 1.0;
+                    #endif
+                #endif
                 return fixed4((diffuse+specular)*_Atten,1.0);
             &#125;
             ENDCG
@@ -213,12 +215,473 @@ document.addEventListener("pjax:success", initScrollReveal);
 <p><code>atten=1.0/distance;</code></p>
 <h2 id="Unity的阴影与实践"><a href="#Unity的阴影与实践" class="headerlink" title="Unity的阴影与实践"></a>Unity的阴影与实践</h2><p>在实时渲染中，会使用<strong>Shadow Map</strong>技术，它会吧摄像头位置放在与光源重合的位置上，这样场景中该光源的阴影区域就是摄像头看不到的地方。</p>
 <p>在前向渲染路径中，如果平行光打开了阴影，Unity会计算该光源的阴影映射纹理。它本身也是一张深度图，记录了从该光源的位置出发、能看到的场景中距离它最近的表面位置（深度信息）。</p>
-<p>计算深度信息的方法可以通过把摄像头挂在光源的位置，然后按正常渲染流程调用Base Pass和Additional Pass进行，但是这样会浪费性能：<strong>我们只要深度信息就行了，而不需要光源的相关计算</strong>。最好的办法是额外使用一个Pass来计算，也就是<code>Tags&#123;&quot;LightMode&quot;=&quot;ShadowCaster&quot;&#125;</code>的Pass。Unity会先把摄像机挂在光源的位置，然后找到LightMode是ShadowCaster的Pass。找不到就去Fallback指定的Shader里继续找。</p>
+<p>计算深度信息的方法可以通过把摄像头挂在光源的位置，然后按正常渲染流程调用Base Pass和Additional Pass进行，但是这样会浪费性能：<strong>我们只要深度信息就行了，而不需要光源的相关计算</strong>。最好的办法是额外使用一个Pass来计算，也就是<code>Tags&#123;&quot;LightMode&quot;=&quot;ShadowCaster&quot;&#125;</code>的Pass。Unity会先把摄像机挂在光源的位置，然后找到LightMode是ShadowCaster的Pass。找不到就去Fallback指定的Shader里继续找（比如“Specular”）。</p>
 <p><strong>传统的阴影映射纹理</strong>的实现中，我们先在正常Pass中把顶点位置变换到光源空间，然后使用xy分量对阴影映射纹理进行采样，得到阴影映射纹理中该位置的深度信息。如果该深度值小于该顶点的深度值，就说明该点位于阴影中。但<strong>屏幕空间的阴影映射技术</strong>中，Unity会调用<code>Tags&#123;&quot;LightMode&quot;=&quot;ShadowCaster&quot;&#125;</code>的Pass来得到可投射阴影的光源阴影映射纹理和摄像机的深度纹理。然后根据上述得到屏幕空间的阴影图。如果摄像机的深度图中表面深度大于转换到阴影映射纹理的深度值，说明该表面虽然可见，但是在该光源的阴影中。这样阴影图就包含了屏幕空间中所有有阴影的区域。如果我们想要一个物体接受来自其他物体的阴影，首先需要把表面坐标从模型空间变换到屏幕空间，然后使用该坐标对阴影图进行采样即可。</p>
 <p>综上，一个物体接收其它物体的阴影和一个物体向其它物体投射阴影是两个过程：</p>
 <p><strong>一个物体接受其它物体的阴影</strong>：必须在Shader里对阴影映射纹理进行采样，把采样结果和最后光照结果相乘。</p>
 <p><strong>一个物体向其它物体投射阴影</strong>：把该物体加入到光源的阴影映射纹理计算中，从而让其它物体在对阴影映射纹理采样时得到该物体的相关信息。这个过程由“ShadowCaster”的Pass实现。</p>
-<h3 id="不透明物体的阴影实践"><a href="#不透明物体的阴影实践" class="headerlink" title="不透明物体的阴影实践"></a>不透明物体的阴影实践</h3></div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Karmotrine.</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/" title="Unity Shader04——复杂光照">https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/" rel="prev" title="Unity Shader05——高级纹理"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">Unity Shader05——高级纹理</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/" rel="next" title="Unity Shader03——透明效果"><span class="post-nav-text">Unity Shader03——透明效果</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>若您想及时得到回复提醒，建议跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Karmotrine</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.0.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.7.0</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
+<h3 id="不透明物体的阴影实践"><a href="#不透明物体的阴影实践" class="headerlink" title="不透明物体的阴影实践"></a>不透明物体的阴影实践</h3><h4 id="让物体投射阴影"><a href="#让物体投射阴影" class="headerlink" title="让物体投射阴影"></a>让物体投射阴影</h4><p>在物体的Mesh Render组件内，我们可以通过设置<strong>Cast Shadows</strong>（是否投射）和<strong>Receive Shadows</strong>（是否接收）属性选择让它是否投射或接收阴影。其中<strong>Cast Shadows</strong>默认情况下会剔除物体背面计算光源的阴影映射纹理。但设置为<strong>Two Sided</strong>时可以允许对物体所有面计算阴影信息。</p>
+<p>投射阴影可以直接使用上面的前向渲染路径Shader，接收阴影的代码在FallBack内，所以不需要我们写，Unity会自行在FallBack找到。</p>
+<h4 id="让物体接收阴影"><a href="#让物体接收阴影" class="headerlink" title="让物体接收阴影"></a>让物体接收阴影</h4><p>但是由于上述代码没有对阴影进行任何处理，因此不会显示别的地方投射来的阴影。因此修改上述代码如下：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Shadow&quot;
+&#123;
+    Properties
+    &#123;
+        _Diffuse (&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1)
+        _Specular (&quot;Specular&quot;,Color)&#x3D;(1,1,1,1)
+        _Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20
+        _Atten (&quot;Atten&quot;,Range(0,256))&#x3D;1.0
+    &#125;
+    SubShader
+    &#123;
+        Tags &#123; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot; &#125;
+        &#x2F;&#x2F;Base Pass
+        Pass&#123;
+            Tags &#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+            CGPROGRAM
+
+            #pragma multi_compile_fwdbase
+
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include &quot;Lighting.cginc&quot;
+            #include &quot;AutoLight.cginc&quot;
+            &#x2F;&#x2F;计算阴影的宏在这个文件内
+
+            fixed4 _Diffuse;
+            fixed4 _Specular;
+            float _Gloss;
+            fixed _Atten;
+
+            struct a2v
+            &#123;
+                float4 vertex:POSITION;
+                float3 normal:NORMAL;
+            &#125;;
+
+            struct v2f
+            &#123;
+                float4 pos:SV_POSITION;
+                float3 worldNormal:TEXCOORD0;
+                float3 worldPos:TEXCOORD1;
+                SHADOW_COORDS(2)
+                &#x2F;&#x2F;声明一个用于对阴影纹理采样的坐标（括号内时下一个可用的插值寄存器的索引值）
+            &#125;;
+
+            v2f vert(a2v v)
+            &#123;
+                v2f o;
+                o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+                o.worldNormal &#x3D; UnityObjectToWorldNormal(v.normal);
+                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+                TRANSFER_SHADOW(o);
+                &#x2F;&#x2F;计算上一步声明的阴影纹理坐标
+                return o;
+            &#125;
+
+            fixed4 frag(v2f i):SV_Target&#123;
+                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz;
+                fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+                fixed3 worldLightDir&#x3D;normalize(_WorldSpaceLightPos0.xyz);
+                fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));
+                fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);
+                fixed3 halfDir&#x3D;normalize(worldLightDir+viewDir);
+                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(max(0,dot(worldNormal,halfDir)),_Gloss);
+                fixed shadow&#x3D;SHADOW_ATTENUATION(i);
+                &#x2F;&#x2F;计算阴影值
+                return fixed4(ambient+(diffuse+specular)*_Atten,1.0);
+            &#125;
+            ENDCG
+            &#125;
+        Pass&#123;
+            Tags &#123;&quot;LightMode&quot;&#x3D;&quot;ForwardAdd&quot;&#125;
+            Blend One One
+            CGPROGRAM
+            #pragma multi_compile_fwdadd
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include &quot;Lighting.cginc&quot;
+            #include &quot;AutoLight.cginc&quot;
+
+            fixed4 _Diffuse;
+            fixed4 _Specular;
+            float _Gloss;
+            fixed _Atten;
+
+            struct a2v
+            &#123;
+                float4 vertex:POSITION;
+                float3 normal:NORMAL;
+            &#125;;
+
+            struct v2f
+            &#123;
+                float4 pos:SV_POSITION;
+                float3 worldNormal:TEXCOORD0;
+                float3 worldPos:TEXCOORD1;
+            &#125;;
+
+            v2f vert(a2v v)
+            &#123;
+                v2f o;
+                o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+                o.worldNormal &#x3D; UnityObjectToWorldNormal(v.normal);
+                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+                return o;
+            &#125;
+
+            fixed4 frag(v2f i):SV_Target&#123;
+                fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+                #ifdef USING_DIRECTIONAL_LIGHT
+                    fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz);
+                #else
+                    fixed3 worldLightDir &#x3D; normalize(_WorldSpaceLightPos0.xyz - i.worldPos.xyz);
+                #endif
+                fixed3 diffuse&#x3D;_LightColor0.rgb*_Diffuse.rgb*saturate(dot(worldNormal,worldLightDir));
+                fixed3 viewDir&#x3D;normalize(_WorldSpaceCameraPos.xyz-i.worldPos.xyz);
+                fixed3 halfDir&#x3D;normalize(worldLightDir+viewDir);
+                fixed3 specular&#x3D;_LightColor0.rgb*_Specular.rgb*pow(max(0,dot(worldNormal,halfDir)),_Gloss);
+                #ifdef USING_DIRECTIONAL_LIGHT
+                    fixed atten &#x3D; 1.0;
+                #else
+                    #if defined (POINT)
+                        float3 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1)).xyz;
+                        fixed atten &#x3D; tex2D(_LightTexture0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+                    #elif defined (SPOT)
+                        float4 lightCoord &#x3D; mul(unity_WorldToLight, float4(i.worldPos, 1));
+                        fixed atten &#x3D; (lightCoord.z &gt; 0) * tex2D(_LightTexture0, lightCoord.xy &#x2F; lightCoord.w + 0.5).w * tex2D(_LightTextureB0, dot(lightCoord, lightCoord).rr).UNITY_ATTEN_CHANNEL;
+                    #else
+                        fixed atten &#x3D; 1.0;
+                    #endif
+                #endif
+                return fixed4((diffuse+specular)*_Atten,1.0);
+            &#125;
+            ENDCG
+            &#125;
+    &#125;
+    FallBack &quot;Specular&quot;
+&#125;</code></pre>
+
+<p><strong>SHADOW_COORDS()</strong>:声明一个用于对阴影纹理采样的坐标，参数需要是下一个可用的插值寄存器的索引值</p>
+<p>**TRANSFER_SHADOW()**：用于在顶点着色器中计算上一步中声明的阴影纹理坐标</p>
+<p>**SHADOW_ATTENUATION()**：计算阴影值</p>
+<p>以上宏的计算都会使用上下文的变量，（比如v.vertex,a.pos等等）因此我们自定义的变量一定要和这些宏中使用的变量名相匹配（a2v顶点坐标变量一定是vertex，结构体a2v一定是v）</p>
+<p>接下来只需要把shadow和漫反射以及高光反射的颜色相乘。</p>
+<h3 id="统一管理光照衰减和阴影"><a href="#统一管理光照衰减和阴影" class="headerlink" title="统一管理光照衰减和阴影"></a>统一管理光照衰减和阴影</h3><p>实际上，光照衰减和阴影对物体最终的渲染结果的影响本质上是相同的——我们都是把光照衰减因子和阴影值及光照结果相乘得到的渲染结果。因此，我们可以利用内置的<strong>UNITY_LIGHT_ATTENUATION</strong>来实现。</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;AttenuationAndShadowUseBuildInFunctions&quot; 
+&#123; 
+Properties 
+&#123; 
+_Diffuse (&quot;Diffuse&quot;,Color)&#x3D;(1,1,1,1) 
+_Specular (&quot;Specular&quot;,Color)&#x3D;(1,1,1,1) 
+_Gloss (&quot;Gloss&quot;, Range(8.0,256))&#x3D;20 
+&#125; 
+SubShader 
+&#123; 
+Tags &#123; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot; &#125; 
+&#x2F;&#x2F;Base Pass 
+Pass&#123; 
+Tags &#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125; 
+CGPROGRAM 
+#pragma multi_compile_fwdbase 
+#pragma vertex vert 
+#pragma fragment frag 
+#include &quot;Lighting.cginc&quot; 
+#include &quot;AutoLight.cginc&quot; 
+fixed4 _Diffuse; 
+fixed4 _Specular; 
+float _Gloss; 
+struct a2v 
+&#123; 
+float4 vertex:POSITION; 
+float3 normal:NORMAL; 
+&#125;; 
+struct v2f 
+&#123; 
+float4 pos:SV_POSITION; 
+float3 worldNormal:TEXCOORD0; 
+float3 worldPos:TEXCOORD1; 
+SHADOW_COORDS(2) 
+&#125;; 
+v2f vert(a2v v) 
+&#123; 
+v2f o; 
+o.pos&#x3D;UnityObjectToClipPos(v.vertex); 
+o.worldNormal &#x3D; UnityObjectToWorldNormal(v.normal); 
+o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz; 
+TRANSFER_SHADOW(o); 
+return o; 
+&#125; 
+fixed4 frag(v2f i):SV_Target&#123; 
+fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz; 
+fixed3 worldNormal &#x3D; normalize(i.worldNormal); 
+fixed3 worldLightDir &#x3D; normalize(UnityWorldSpaceLightDir(i.worldPos)); 
+fixed3 diffuse &#x3D; _LightColor0.rgb * _Diffuse.rgb * max(0, dot(worldNormal, worldLightDir)); 
+fixed3 viewDir &#x3D; normalize(UnityWorldSpaceViewDir(i.worldPos)); 
+fixed3 halfDir &#x3D; normalize(worldLightDir + viewDir); 
+fixed3 specular &#x3D; _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss); 
+UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos); 
+return fixed4((diffuse + specular) * atten, 1.0); 
+&#125; 
+ENDCG 
+&#125; 
+Pass&#123; 
+Tags &#123;&quot;LightMode&quot;&#x3D;&quot;ForwardAdd&quot;&#125; 
+Blend One One 
+CGPROGRAM 
+#pragma multi_compile_fwdadd 
+#pragma vertex vert 
+#pragma fragment frag 
+#include &quot;Lighting.cginc&quot; 
+#include &quot;AutoLight.cginc&quot; 
+fixed4 _Diffuse; 
+fixed4 _Specular; 
+float _Gloss; 
+struct a2v 
+&#123; 
+float4 vertex:POSITION; 
+float3 normal:NORMAL; 
+&#125;; 
+struct v2f 
+&#123; 
+float4 pos:SV_POSITION; 
+float3 worldNormal:TEXCOORD0; 
+float3 worldPos:TEXCOORD1; 
+SHADOW_COORDS(2) 
+&#125;; 
+v2f vert(a2v v) 
+&#123; 
+v2f o; 
+o.pos&#x3D;UnityObjectToClipPos(v.vertex); 
+o.worldNormal &#x3D; UnityObjectToWorldNormal(v.normal); 
+o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz; 
+TRANSFER_SHADOW(o); 
+return o; 
+&#125; 
+fixed4 frag(v2f i):SV_Target&#123; 
+fixed3 worldNormal&#x3D;normalize(i.worldNormal); 
+fixed3 worldLightDir &#x3D; normalize(UnityWorldSpaceLightDir(i.worldPos)); 
+fixed3 diffuse &#x3D; _LightColor0.rgb * _Diffuse.rgb * max(0, dot(worldNormal, worldLightDir)); 
+fixed3 viewDir &#x3D; normalize(UnityWorldSpaceViewDir(i.worldPos)); 
+fixed3 halfDir &#x3D; normalize(worldLightDir + viewDir); 
+fixed3 specular &#x3D; _LightColor0.rgb * _Specular.rgb * pow(max(0, dot(worldNormal, halfDir)), _Gloss); 
+&#x2F;&#x2F; UNITY_LIGHT_ATTENUATION not only compute attenuation, but also shadow infos 
+UNITY_LIGHT_ATTENUATION(atten, i, i.worldPos); 
+return fixed4((diffuse + specular) * atten, 1.0); 
+&#125; 
+ENDCG 
+&#125; 
+&#125; 
+FallBack &quot;Specular&quot; 
+&#125;</code></pre>
+
+<p>**UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos)**：声明第一个参数，并将光照衰减和阴影值相乘后的结果存储到第一个参数中。</p>
+<p>其中第二个参数是结构体v2f，这个参数会传递给<strong>SHADOW_ATTENUATION</strong>计算阴影值。</p>
+<p>第三个参数是世界空间的坐标，用于计算光源空间下的坐标，再对光照衰减纹理采样。</p>
+<p><strong>UNITY_LIGHT_ATTENUATION</strong>的使用使得我们不需要在Base Pass里单独处理阴影，也不需要在Additional Pass内单独处理光照衰减。两个Pass的代码得以统一了。</p>
+<h3 id="透明度物体的阴影"><a href="#透明度物体的阴影" class="headerlink" title="透明度物体的阴影"></a>透明度物体的阴影</h3><h4 id="透明度测试实践"><a href="#透明度测试实践" class="headerlink" title="透明度测试实践"></a>透明度测试实践</h4><p>对于不透明物体而言，使用FallBack里的<strong>VertexLit</strong>就可以完美得到正确的阴影，但对于透明物体则不然。之前提到透明物体的方法有透明度测试和透明度混合，这里使用透明度测试，在其基础上完成阴影的实现：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">hader &quot;Unity Shader Book&#x2F;Chapter 9&#x2F;AlphaTestWithShadow&quot;
+&#123;
+    Properties&#123;
+    _Color(&quot;Main Tint&quot;,Color)&#x3D;(1,1,1,1)
+    _MainTex(&quot;Main Tex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;
+    _Cutoff(&quot;Alpha Cutoff&quot;,Range(0,1))&#x3D;0.5
+&#125;
+SubShader&#123;
+    Tags&#123;&quot;Queue&quot;&#x3D;&quot;AlphaTest&quot; &quot;IgnoreProjector&quot;&#x3D;&quot;True&quot; &quot;RenderType&quot;&#x3D;&quot;TransparentCutout&quot;&#125;
+
+    Pass&#123;
+        Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+
+        Cull Off
+
+        CGPROGRAM
+
+        #pragma vertex vert
+        #pragma fragment frag
+
+        #include &quot;Lighting.cginc&quot;
+        #include &quot;AutoLight.cginc&quot;
+
+        fixed4 _Color;
+        sampler2D _MainTex;
+        float4 _MainTex_ST;
+        fixed _Cutoff;
+
+        struct a2v&#123;
+            float4 vertex:POSITION;
+            float3 normal:NORMAL;
+            float4 texcoord:TEXCOORD0;
+        &#125;;
+
+        struct v2f&#123;
+            float4 pos:SV_POSITION;
+            float3 worldNormal:TEXCOORD0;
+            float3 worldPos:TEXCOORD1;
+            float2 uv:TEXCOORD2;
+            SHADOW_COORDS(3)
+        &#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+            o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+            o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+            TRANSFER_SHADOW(o);
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+            fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+            fixed4 texColor&#x3D;tex2D(_MainTex,i.uv);
+            clip(texColor.a-_Cutoff);
+            fixed3 albedo&#x3D;texColor.rgb*_Color.rgb;
+            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
+            fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));
+            UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+            return fixed4(ambient+diffuse*atten,1.0);
+        &#125;
+        ENDCG
+    &#125;
+&#125;
+        Fallback &quot;Transparent&#x2F;Cutout&#x2F;VertexLit&quot;
+&#125;
+</code></pre>
+
+<p>如果我们在Fallback内直接使用<strong>VertexLit</strong>的话，阴影结果可能不正确（已经被剔除且不会显示的片元依旧出现了阴影），其原因是<strong>VertexLit</strong>内的Pass没有进行任何透明度测试的计算。我们可以自己写一个，也可以把Fallback改成<strong>Transparent/Cutout/VertexLit</strong>。这个Fallback要求我们提供一个名字叫做**_Cutoff**的属性作为透明度测试的阈值。</p>
+<h4 id="透明度混合实践"><a href="#透明度混合实践" class="headerlink" title="透明度混合实践"></a>透明度混合实践</h4><p>相比于透明度测试，透明度混合的阴影实现更为复杂。因为所有内置UnityShader都没有包含阴影投射的Pass。这意味着半透明物体不会对其它物体投射阴影，本身也不会接收阴影。复杂的问题在于透明度混合关闭了深度写入，从而影响了阴影的生成。总体来说，要产生正确的阴影，就要在每个光源空间下仍然严格按照从后往前的顺序进行渲染，这会使得阴影处理变得很复杂。因此，半透明物体不会有阴影生成。</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;AlphaBlendWithShadow&quot;
+&#123;
+    Properties
+    &#123;
+        _Color (&quot;Main Tint&quot;, Color) &#x3D; (1,1,1,1)
+        _MainTex (&quot;Main Tex&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;
+        _AlphaScale(&quot;Alpha Scale&quot;,Range(0,1))&#x3D;1
+    &#125;
+    SubShader&#123;
+    Tags&#123;&quot;Queue&quot;&#x3D;&quot;Transparent&quot; &quot;IgnoreProjector&quot;&#x3D;&quot;True&quot; &quot;RenderType&quot;&#x3D;&quot;Transparent&quot;&#125;
+
+    Pass&#123;
+        Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+
+        Cull Front
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
+        CGPROGRAM
+
+        #pragma vertex vert
+        #pragma fragment frag
+
+        #include &quot;Lighting.cginc&quot;
+        #include &quot;AutoLight.cginc&quot;
+
+        fixed4 _Color;
+        sampler2D _MainTex;
+        float4 _MainTex_ST;
+        fixed _AlphaScale;
+
+        struct a2v&#123;
+            float4 vertex:POSITION;
+            float3 normal:NORMAL;
+            float4 texcoord:TEXCOORD0;
+        &#125;;
+
+        struct v2f&#123;
+            float4 pos:SV_POSITION;
+            float3 worldNormal:TEXCOORD0;
+            float3 worldPos:TEXCOORD1;
+            float2 uv:TEXCOORD2;
+            SHADOW_COORDS(3)
+        &#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+            o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+            o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+            TRANSFER_SHADOW(o);
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+            fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+            fixed4 texColor&#x3D;tex2D(_MainTex,i.uv);
+            fixed3 albedo&#x3D;texColor.rgb*_Color.rgb;
+            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
+            fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));
+            UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+            return fixed4(ambient+diffuse,texColor.a*_AlphaScale);
+        &#125;
+        ENDCG
+    &#125;
+    Pass&#123;
+        Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+
+        Cull Back
+        ZWrite Off
+        Blend SrcAlpha OneMinusSrcAlpha
+        CGPROGRAM
+
+        #pragma vertex vert
+        #pragma fragment frag
+
+        #include &quot;Lighting.cginc&quot;
+        #include &quot;AutoLight.cginc&quot;
+
+        fixed4 _Color;
+        sampler2D _MainTex;
+        float4 _MainTex_ST;
+        fixed _AlphaScale;
+
+        struct a2v&#123;
+            float4 vertex:POSITION;
+            float3 normal:NORMAL;
+            float4 texcoord:TEXCOORD0;
+        &#125;;
+
+        struct v2f&#123;
+            float4 pos:SV_POSITION;
+            float3 worldNormal:TEXCOORD0;
+            float3 worldPos:TEXCOORD1;
+            float2 uv:TEXCOORD2;
+            SHADOW_COORDS(3)
+        &#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+            o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+            o.uv&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+            TRANSFER_SHADOW(o);
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+            fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+            fixed4 texColor&#x3D;tex2D(_MainTex,i.uv);
+            fixed3 albedo&#x3D;texColor.rgb*_Color.rgb;
+            fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT.xyz*albedo;
+            fixed3 diffuse&#x3D;_LightColor0.rgb*albedo*max(0,dot(worldNormal,worldLightDir));
+            UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+            return fixed4(ambient+diffuse*atten,texColor.a*_AlphaScale);
+        &#125;
+        ENDCG
+    &#125;
+&#125;
+        Fallback &quot;VertexLit&quot;
+&#125;
+</code></pre>
+
+<p>然而我们可以通过把Fallback设置为<strong>VertexLit、DIffuse</strong>这些不透明物体使用的Unity Shader，将该物体作为不透明物体生成阴影。</p>
+</div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Karmotrine.</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/" title="Unity Shader04——复杂光照">https://karmotrine.fun/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"><a class="post-nav-prev" href="/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/" rel="prev" title="Unity Shader05——高级纹理"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-left-s-line"></use></svg><span class="post-nav-text">Unity Shader05——高级纹理</span></a></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/01/13/Unity-Shader03%E2%80%94%E2%80%94%E9%80%8F%E6%98%8E%E6%95%88%E6%9E%9C/" rel="next" title="Unity Shader03——透明效果"><span class="post-nav-text">Unity Shader03——透明效果</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>若您想及时得到回复提醒，建议跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Karmotrine</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.0.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.7.0</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
   setTimeout(blog_live_time, 1000);
   const start = new Date('2022-01-07T00:00:00');
   const now = new Date();
