@@ -19,12 +19,12 @@ document.addEventListener("pjax:success", initScrollReveal);
 <meta property="og:locale">
 <meta property="og:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/Snell.png">
 <meta property="article:published_time" content="2022-01-16T13:06:54.000Z">
-<meta property="article:modified_time" content="2022-01-18T12:45:07.831Z">
+<meta property="article:modified_time" content="2022-01-23T05:40:56.348Z">
 <meta property="article:author" content="Karmotrine">
 <meta property="article:tag" content="笔记">
 <meta property="article:tag" content="Shader">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/Snell.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Karmotrine"><img width="96" loading="lazy" src="https://portrait.gitee.com/uploads/avatars/user/2943/8831424_karmotrine_1616074181.png!avatar100" alt="Karmotrine"><span class="site-author-status" title="不想上学">😭</span></a><div class="site-author-name"><a href="/about/">Karmotrine</a></div><span class="site-name">Utopia</span><sub class="site-subtitle">Kyrie eleison.</sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">4</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=657493712&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/karm0tr1ne" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:657493712@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/191503773/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1376395329" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/karmotrine-32" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/85367843" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%8B%E6%96%B9%E4%BD%93%E7%BA%B9%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">立方体纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A9%E7%A9%BA%E7%9B%92"><span class="toc-number">2.2.</span> <span class="toc-text">天空盒</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%98%A0%E5%B0%84"><span class="toc-number">2.3.</span> <span class="toc-text">环境映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84"><span class="toc-number">2.4.</span> <span class="toc-text">反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%B0%84"><span class="toc-number">2.5.</span> <span class="toc-text">折射</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Karmotrine"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Utopia"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Unity Shader05——高级纹理</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2022-01-16 21:06:54" itemprop="dateCreated datePublished" datetime="2022-01-16T21:06:54+08:00">2022-01-16</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2022-01-18 20:45:07" itemprop="dateModified" datetime="2022-01-18T20:45:07+08:00">2022-01-18</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">1.5k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">6m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/Shader/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Shader</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a><a class="tag-item" href="/tags/Shader/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Shader</span></a></span></div><div class="post-author"><div class="author-avatar"><img src="https://www.gravatar.com/avatar/6c9385ec68c559cae4e1d7a3e3b483c0?s=20&amp;d=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FYunYouJun%2Fcdn%2Fimg%2Favatar%2Fnone.jpg"></div><span class="author-name">Karmotrine.</span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1873324098&auto=1&height=66"></iframe>
+<meta name="twitter:image" content="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/Snell.png"><script src="/js/ui/mode.js"></script></head><body><script defer src="https://cdn.jsdelivr.net/npm/animejs@latest"></script><script defer src="/js/ui/fireworks.js"></script><canvas class="fireworks"></canvas><div class="container"><a class="sidebar-toggle hty-icon-button" id="menu-btn"><div class="hamburger hamburger--spin" type="button"><span class="hamburger-box"><span class="hamburger-inner"></span></span></div></a><div class="sidebar-toggle sidebar-overlay"></div><aside class="sidebar"><script src="/js/sidebar.js"></script><ul class="sidebar-nav"><li class="sidebar-nav-item sidebar-nav-toc hty-icon-button sidebar-nav-active" data-target="post-toc-wrap" title="文章目录"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-list-ordered"></use></svg></li><li class="sidebar-nav-item sidebar-nav-overview hty-icon-button" data-target="site-overview-wrap" title="站点概览"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-passport-line"></use></svg></li></ul><div class="sidebar-panel" id="site-overview-wrap"><div class="site-info fix-top"><a class="site-author-avatar" href="/about/" title="Karmotrine"><img width="96" loading="lazy" src="https://portrait.gitee.com/uploads/avatars/user/2943/8831424_karmotrine_1616074181.png!avatar100" alt="Karmotrine"><span class="site-author-status" title="不想上学">😭</span></a><div class="site-author-name"><a href="/about/">Karmotrine</a></div><span class="site-name">Utopia</span><sub class="site-subtitle">Kyrie eleison.</sub><div class="site-desciption"></div></div><nav class="site-state"><a class="site-state-item hty-icon-button icon-home" href="/" title="首页"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-home-4-line"></use></svg></span></a><div class="site-state-item"><a href="/archives/" title="归档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-archive-line"></use></svg></span><span class="site-state-item-count">11</span></a></div><div class="site-state-item"><a href="/categories/" title="分类"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-2-line"></use></svg></span><span class="site-state-item-count">2</span></a></div><div class="site-state-item"><a href="/tags/" title="标签"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="site-state-item-count">4</span></a></div><a class="site-state-item hty-icon-button" target="_blank" rel="noopener" href="https://yun.yunyoujun.cn" title="文档"><span class="site-state-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-settings-line"></use></svg></span></a></nav><hr style="margin-bottom:0.5rem"><div class="links-of-author"><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://wpa.qq.com/msgrd?v=3&amp;uin=657493712&amp;site=qq&amp;menu=yes" title="QQ" target="_blank" style="color:#12B7F5"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-qq-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://github.com/karm0tr1ne" title="GitHub" target="_blank" style="color:#181717"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-github-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="mailto:657493712@qq.com" title="E-Mail" target="_blank" style="color:#8E71C1"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-mail-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.douban.com/people/191503773/" title="豆瓣" target="_blank" style="color:#007722"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-douban-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://music.163.com/#/user/home?id=1376395329" title="网易云音乐" target="_blank" style="color:#C10D0C"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-netease-cloud-music-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://www.zhihu.com/people/karmotrine-32" title="知乎" target="_blank" style="color:#0084FF"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-zhihu-line"></use></svg></a><a class="links-of-author-item hty-icon-button" rel="noopener" href="https://space.bilibili.com/85367843" title="哔哩哔哩动画" target="_blank" style="color:#FF8EB3"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-bilibili-line"></use></svg></a></div><hr style="margin:0.5rem 1rem"><div class="links"><a class="links-item hty-icon-button" href="/links/" title="我的小伙伴们" style="color:dodgerblue"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-genderless-line"></use></svg></a></div><br><a class="links-item hty-icon-button" id="toggle-mode-btn" href="javascript:;" title="Mode" style="color: #f1cb64"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-contrast-2-line"></use></svg></a></div><div class="sidebar-panel sidebar-panel-active" id="post-toc-wrap"><div class="post-toc"><div class="post-toc-content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AB%8B%E6%96%B9%E4%BD%93%E7%BA%B9%E7%90%86"><span class="toc-number">2.</span> <span class="toc-text">立方体纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5"><span class="toc-number">2.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%A9%E7%A9%BA%E7%9B%92"><span class="toc-number">2.2.</span> <span class="toc-text">天空盒</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%AF%E5%A2%83%E6%98%A0%E5%B0%84"><span class="toc-number">2.3.</span> <span class="toc-text">环境映射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84"><span class="toc-number">2.4.</span> <span class="toc-text">反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%8A%98%E5%B0%84"><span class="toc-number">2.5.</span> <span class="toc-text">折射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%8F%B2%E6%B6%85%E5%B0%94%E5%8F%8D%E5%B0%84"><span class="toc-number">2.6.</span> <span class="toc-text">菲涅尔反射</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B8%B2%E6%9F%93%E7%BA%B9%E7%90%86"><span class="toc-number">3.</span> <span class="toc-text">渲染纹理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%A6%82%E5%BF%B5-1"><span class="toc-number">3.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E9%95%9C%E5%AD%90%E6%95%88%E6%9E%9C"><span class="toc-number">3.2.</span> <span class="toc-text">镜子效果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%8E%BB%E7%92%83%E6%95%88%E6%9E%9C"><span class="toc-number">3.3.</span> <span class="toc-text">玻璃效果</span></a></li></ol></li></ol></div></div></div></aside><main class="sidebar-translate" id="content"><div id="post"><article class="hty-card post-block" itemscope itemtype="https://schema.org/Article"><link itemprop="mainEntityOfPage" href="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/"><span hidden itemprop="author" itemscope itemtype="https://schema.org/Person"><meta itemprop="name" content="Karmotrine"><meta itemprop="description"></span><span hidden itemprop="publisher" itemscope itemtype="https://schema.org/Organization"><meta itemprop="name" content="Utopia"></span><header class="post-header"><h1 class="post-title" itemprop="name headline">Unity Shader05——高级纹理</h1><div class="post-meta"><div class="post-time" style="display:block"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-line"></use></svg></span> <time title="创建时间：2022-01-16 21:06:54" itemprop="dateCreated datePublished" datetime="2022-01-16T21:06:54+08:00">2022-01-16</time><span class="post-meta-divider">-</span><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-calendar-2-line"></use></svg></span> <time title="修改时间：2022-01-23 13:40:56" itemprop="dateModified" datetime="2022-01-23T13:40:56+08:00">2022-01-23</time></div><span class="post-count"><span class="post-symbolcount"><span class="post-meta-item-icon" title="本文字数"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-file-word-line"></use></svg></span> <span title="本文字数">3.7k</span><span class="post-meta-divider">-</span><span class="post-meta-item-icon" title="阅读时长"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-timer-line"></use></svg></span> <span title="阅读时长">17m</span></span></span><div class="post-classify"><span class="post-category"> <span class="post-meta-item-icon" style="margin-right:3px;"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-folder-line"></use></svg></span><span itemprop="about" itemscope itemtype="https://schema.org/Thing"><a class="category-item" href="/categories/Shader/" style="--text-color:var(--hty-text-color)" itemprop="url" rel="index"><span itemprop="text">Shader</span></a></span></span><span class="post-tag"><span class="post-meta-divider">-</span><a class="tag-item" href="/tags/%E7%AC%94%E8%AE%B0/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">笔记</span></a><a class="tag-item" href="/tags/Shader/" style="--text-color:var(--hty-text-color)"><span class="post-meta-item-icon"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-price-tag-3-line"></use></svg></span><span class="tag-name">Shader</span></a></span></div><div class="post-author"><div class="author-avatar"><img src="https://www.gravatar.com/avatar/6c9385ec68c559cae4e1d7a3e3b483c0?s=20&amp;d=https%3A%2F%2Fcdn.jsdelivr.net%2Fgh%2FYunYouJun%2Fcdn%2Fimg%2Favatar%2Fnone.jpg"></div><span class="author-name">Karmotrine.</span></div></div></header><section class="post-body" itemprop="articleBody"><div class="post-content markdown-body" style="--smc-primary:#0078E7;"><iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=1873324098&auto=1&height=66"></iframe>
 
 <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这个并不是技术分享的教程类博客，只是我记录的笔记而已。不，不要误会了！<del>（虽然溜一遍下来发现好像也能看</del></p>
 <h2 id="立方体纹理"><a href="#立方体纹理" class="headerlink" title="立方体纹理"></a>立方体纹理</h2><h3 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h3><p>立方体纹理和之前的2D纹理不同，一共包含了6张图像对应6个面。而对于三维的立方体纹理，我们也要提供一个三维的纹理坐标<strong>表示在世界空间下的一个3D方向</strong>。这个方向从立方体中心出发，向外部延伸与6个纹理之一相交，从而得出采样结果。</p>
@@ -153,6 +153,310 @@ public class RenderCubemapWizard : ScriptableWizard &#123;
 
 <h3 id="折射"><a href="#折射" class="headerlink" title="折射"></a>折射</h3><p>折射就是，当光线从一类介质斜射入另一种介质时，传播方向一般会发生改变。而改变的规律可以使用斯涅尔定律：</p>
 <p><img src="Snell.png" alt="Snell" loading="lazy"></p>
+<p>其中两个η是两个介质的折射率，两个角是入射方向、反射方向分别与法线方向的夹角。、</p>
+<p>当光线穿过透明物体的两个表面时，我们原则只计算一次折射（因为模拟一次得到的效果看起来也是那么回事）。</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Refraction&quot;
+&#123;
+    Properties
+    &#123;
+        _Color (&quot;Color Tint&quot;, Color) &#x3D; (1,1,1,1)
+        _RefractColor(&quot;Refraction Color&quot;,Color)&#x3D;(1,1,1,1)
+        _RefractAmount(&quot;Refraction Amount&quot;,Range(0,1))&#x3D;1
+        _RefractRatio(&quot;Refraction Ratio&quot;,Range(0.1,1))&#x3D;0.5
+        _Cubemap(&quot;Refraction Cubemap&quot;,Cube)&#x3D;&quot;_Skybox&quot;&#123;&#125;
+    &#125;
+    SubShader
+    &#123;
+        Tags &#123; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot; &quot;Queue&quot;&#x3D;&quot;Geometry&quot;&#125;
+        pass&#123;
+            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+            CGPROGRAM
+
+            fixed4 _Color;
+            fixed4 _RefractColor;
+            float _RefractAmount;
+            float _RefractRatio;
+            samplerCUBE _Cubemap;
+
+        #pragma multi_compile_fwdbase
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include &quot;Lighting.cginc&quot;
+            #include &quot;AutoLight.cginc&quot;
+
+            struct a2v&#123;
+                float4 vertex:POSITION;
+                float3 normal:NORMAL;
+            &#125;;
+
+            struct v2f&#123;
+                float4 pos:SV_POSITION;
+                float3 worldNormal:TEXCOORD0;
+                float3 worldPos:TEXCOORD1;
+                float3 worldViewDir:TEXCOORD2;
+                float3 worldRefr:TEXCOORD3;
+                SHADOW_COORDS(4)
+            &#125;;
+
+            v2f vert(a2v v)&#123;
+                v2f o;
+                o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+                o.worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+                o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+                o.worldViewDir&#x3D;UnityWorldSpaceViewDir(o.worldPos);
+                &#x2F;&#x2F;计算折射方向
+                o.worldRefr&#x3D;refract(-normalize(o.worldViewDir),normalize(o.worldNormal),_RefractRatio);
+                TRANSFER_SHADOW(o);
+                return o;
+            &#125;
+
+            fixed4 frag(v2f i):SV_TARGET&#123;
+                fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+                fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+                fixed3 worldViewDir&#x3D;normalize(UnityWorldSpaceViewDir(i.worldViewDir));
+                fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT;
+                fixed3 diffuse&#x3D;_LightColor0.rgb*_Color.rgb*max(0,dot(worldNormal,worldLightDir));
+                fixed3 refraction&#x3D;texCUBE(_Cubemap,i.worldRefr).rgb*_RefractColor.rgb;
+                &#x2F;&#x2F;使用折射方向对立方体纹理进行采样
+                UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+                fixed3 color&#x3D;ambient+lerp(diffuse,refraction,_RefractAmount)*atten;
+                return fixed4(color,1.0);
+            &#125;
+            ENDCG
+        &#125;
+    &#125;
+    Fallback&quot;Reflective&#x2F;VertexLit&quot;
+&#125;</code></pre>
+
+<p><strong>refract</strong>：第一个参数是入射光线方向（必须归一化矢量），第二个参数是表面法线（必须归一化矢量），第三个参数是两个介质折射率的比值。</p>
+<h3 id="菲涅尔反射"><a href="#菲涅尔反射" class="headerlink" title="菲涅尔反射"></a>菲涅尔反射</h3><p>事实上，当光线与介质相碰时，折射与反射是按一定比率关系同时发生的，而这个可以使用菲涅尔等式进行计算。真实世界的菲涅尔等式十分复杂，所以我们通常使用一些近似公式计算。比如<strong>Schlick菲涅尔近似等式</strong>：</p>
+<p>$$F_{Schlick}(v,n)=F_0+(1-F_0)(1-v*n)^5$$</p>
+<p>其中F0是反射西师，控制菲涅尔反射强度，v是视角方向，n是表面法线。</p>
+<p>以及<strong>Emprical菲涅尔近似等式</strong>：</p>
+<p>$$ F_{Empricial}(v,n)=max(0,min(1,bias+scal*(1-v*n)^{power}))$$</p>
+<p>其中scal,power,bias全是控制项。</p>
+<p>以下是通过<strong>Schlick菲涅尔近似等式</strong>模拟的菲涅尔反射：</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Fresnel&quot;
+&#123;
+    Properties
+    &#123;
+        _Color (&quot;Color&quot;, Color) &#x3D; (1,1,1,1)
+        _FresnelScale(&quot;Fresnel Scale&quot;,Range(0,1))&#x3D;0.5
+        _Cubemap(&quot;Reflection Cubemap&quot;,Cube)&#x3D;&quot;_Skybox&quot;&#123;&#125;
+    &#125;
+    SubShader
+    &#123;
+        Tags &#123; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot; &quot;Queue&quot;&#x3D;&quot;Geometry&quot;&#125;
+        pass&#123;
+            Tags&#123;&quot;LightMode&quot;&#x3D;&quot;ForwardBase&quot;&#125;
+            CGPROGRAM
+                #pragma vertex vert
+                #pragma fragment frag
+                #pragma multi_compile_fwdbase
+
+                #include &quot;Lighting.cginc&quot;
+                #include &quot;AutoLight.cginc&quot;
+
+                fixed4 _Color;
+                float _FresnelScale;
+                samplerCUBE _Cubemap;
+
+                struct a2v&#123;
+                    float4 vertex:POSITION;
+                    float3 normal:NORMAL;
+                &#125;;
+
+                struct v2f&#123;
+                    float4 pos:SV_POSITION;
+                    float3 worldNormal:TEXCOORD0;
+                    float3 worldPos:TEXCOORD1;
+                    float3 worldViewDir:TEXCOORD2;
+                    float3 worldRefl:TEXCOORD3;
+                    SHADOW_COORDS(4)
+                &#125;;
+
+                v2f vert(a2v v)&#123;
+                    v2f o;
+                    o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+                    o.worldNormal &#x3D; UnityObjectToWorldNormal(v.normal);
+                    o.worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+                    o.worldViewDir&#x3D;UnityWorldSpaceViewDir(o.worldPos);
+                    o.worldRefl&#x3D;reflect(-o.worldViewDir,o.worldNormal);
+                    TRANSFER_SHADOW(o);
+                    return o;
+                &#125;
+
+                fixed4 frag(v2f i):SV_TARGET&#123;
+                    fixed3 worldNormal&#x3D;normalize(i.worldNormal);
+                    fixed3 worldLightDir&#x3D;normalize(UnityWorldSpaceLightDir(i.worldPos));
+                    fixed3 worldViewDir&#x3D;normalize(i.worldViewDir);
+                    fixed3 ambient&#x3D;UNITY_LIGHTMODEL_AMBIENT;
+                    UNITY_LIGHT_ATTENUATION(atten,i,i.worldPos);
+                    fixed3 reflection&#x3D;texCUBE(_Cubemap,i.worldRefl).rgb;
+                    fixed fresnel&#x3D;_FresnelScale+(1-_FresnelScale)*pow(1-dot(worldViewDir,worldNormal),5);
+                    &#x2F;&#x2F;计算菲涅尔反射
+                    fixed3 diffuse&#x3D;_LightColor0.rgb*_Color.rgb*max(0,dot(worldNormal,worldLightDir));
+                    fixed3 color&#x3D;ambient+lerp(diffuse,reflection,saturate(fresnel))*atten;
+                    &#x2F;&#x2F;将结果混合
+                    return fixed4(color,1.0);
+                &#125;
+            ENDCG
+        &#125;
+    &#125;
+    FallBack &quot;Reflective&#x2F;VertexLit&quot;
+&#125;</code></pre>
+
+<h2 id="渲染纹理"><a href="#渲染纹理" class="headerlink" title="渲染纹理"></a>渲染纹理</h2><h3 id="概念-1"><a href="#概念-1" class="headerlink" title="概念"></a>概念</h3><p>多重渲染目标（MRT）使GPU允许我们把场景同时渲染到多个渲染目标纹理中，而不用为每个渲染目标纹理单独渲染完整的场景。</p>
+<p>Unity为渲染目标纹理定义了一种专门的纹理类型——<strong>渲染纹理</strong>。使用它的方式有如下两种方法：</p>
+<p>1.创建一个渲染纹理，并把一个摄像机的渲染目标设置成该渲染纹理。这样的话，摄像机的渲染结果会实时更新到渲染纹理中，而不是显示在屏幕上；</p>
+<p>2.在屏幕后处理时使用GrabPass命令或OnRenderImage函数获取当前的屏幕图像。这样Unity会把该屏幕图像放到一张与屏幕分辨率等同的渲染纹理中，从而在自定义的Pass中当成普通的纹理来处理。</p>
+<h3 id="镜子效果"><a href="#镜子效果" class="headerlink" title="镜子效果"></a>镜子效果</h3><pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;Mirror&quot;
+&#123;
+    Properties
+    &#123;
+        _MainTex (&quot;Main Tex&quot;, 2D) &#x3D; &quot;white&quot; &#123;&#125;
+    &#125;
+    SubShader
+    &#123;
+        Tags &#123; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot; &quot;Queue&quot;&#x3D;&quot;Geometry&quot;&#125;
+        pass&#123;
+        CGPROGRAM
+        #pragma vertex vert
+        #pragma fragment frag
+
+        sampler2D _MainTex;
+
+			struct a2v &#123;
+				float4 vertex : POSITION;
+				float3 texcoord : TEXCOORD0;
+			&#125;;
+
+			struct v2f &#123;
+				float4 pos : SV_POSITION;
+				float2 uv : TEXCOORD0;
+			&#125;;
+
+        v2f vert(a2v v)&#123;
+            v2f o;
+            o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+            o.uv&#x3D;v.texcoord;
+            o.uv.x&#x3D;1-o.uv.x;
+            &#x2F;&#x2F;由于镜子是反向的，所以纹理的uv中x也要反向
+            return o;
+        &#125;
+
+        fixed4 frag(v2f i):SV_TARGET&#123;
+            return tex2D(_MainTex,i.uv);
+            &#x2F;&#x2F;对纹理采样完就可以输出
+        &#125;
+        ENDCG
+        &#125;
+    &#125;
+    FallBack Off
+&#125;</code></pre>
+
+<p>代码本身很简单，只是使用一个渲染纹理作为输入属性，并把它水平翻转后直接显示到物体上。</p>
+<p>但与此同时我们还要：</p>
+<p>1.创建一个渲染纹理（Render Texture），并且把它挂载到摄像机的Target Texture上；</p>
+<p>2.再把这个渲染纹理挂载到material上。</p>
+<h3 id="玻璃效果"><a href="#玻璃效果" class="headerlink" title="玻璃效果"></a>玻璃效果</h3><p><strong>GrabPass</strong>：当我们在Shader内定义了它后，Unity会把当前屏幕的图像绘制在一张纹理中，以便我们在后续的Pass访问。使用GrabPass可以让我们对该物体后面的图像进行更复杂的处理，比如对透明物体的渲染。</p>
+<p>使用GrabPass需要额外小心<strong>物体的渲染队列设置</strong>：尽管代码内不包含混合指令，但仍然要把物体的渲染队列设置成透明（Tags{“Queue”=“Transparent”}），从而保证在渲染时，所有的不透明物体已经被绘制在屏幕上，从而获取正确的屏幕图像。</p>
+<p>以下代码来模拟一个玻璃效果。基本思路是：使用一张法线纹理修改模型的法线信息（凹凸纹理），再使用上文反射方法，通过一个Cubemap实现模拟玻璃的反射。而Cubemap使用GrabPass获取玻璃后面的屏幕图像，并使用切线空间下的法线对屏幕纹理坐标偏移后，再对屏幕图像进行采样来模拟近似的折射效果。</p>
+<pre class="language-Shader" data-language="Shader"><code class="language-Shader">Shader &quot;Custom&#x2F;GlassRefraction&quot;
+&#123;
+    Properties
+    &#123;
+        _MainTex(&quot;Main Tex&quot;,2D)&#x3D;&quot;white&quot;&#123;&#125;
+        &#x2F;&#x2F;玻璃的材质纹理
+        _BumpMap(&quot;Normal Map&quot;,2D)&#x3D;&quot;bump&quot;&#123;&#125;
+        &#x2F;&#x2F;玻璃的法线纹理
+        _Cubemap(&quot;Environment Cubemap&quot;,Cube)&#x3D;&quot;_Skybox&quot;&#123;&#125;
+        &#x2F;&#x2F;模拟反射的环境纹理
+        _Distortion(&quot;Distortion&quot;,Range(0,100))&#x3D;10
+        &#x2F;&#x2F;控制模拟折射时图像的扭曲程度
+        _RefractAmount(&quot;Refract Amount&quot;,Range(0.0,1.0))&#x3D;1.0
+        &#x2F;&#x2F;折射程度，为0时只有反射，1时只有折射
+    &#125;
+    SubShader
+    &#123;
+        Tags &#123;&quot;Queue&quot;&#x3D;&quot;Transparent&quot; &quot;RenderType&quot;&#x3D;&quot;Opaque&quot;&#125;
+        GrabPass&#123;&quot;_RefractionTex&quot;&#125;
+        &#x2F;&#x2F;定义一个抓取屏幕图像的Pass，并存在名为_RefractionTex的纹理中
+        pass&#123;
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+
+            #include &quot;UnityCG.cginc&quot;
+
+            sampler2D _MainTex;
+            float4 _MainTex_ST;
+            sampler2D _BumpMap;
+            float4 _BumpMap_ST;
+            samplerCUBE _Cubemap;
+            float _Distortion;
+            fixed _RefractAmount;
+            sampler2D _RefractionTex;
+            &#x2F;&#x2F;由于之前采样了，所以也要在这里声明纹理
+            float4 _RefractionTex_TexelSize;
+            &#x2F;&#x2F;这样命名得到纹理的纹素大小，对纹理坐标进行偏移时使用该变量
+
+            struct a2v&#123;
+                float4 vertex:POSITION;
+                float4 normal:NORMAL;
+                float4 tangent:TANGENT;
+                float texcoord:TEXCOORD0;
+            &#125;;
+
+            struct v2f&#123;
+                float4 pos:SV_POSITION;
+                float4 scrPos:TEXCOORD0;
+                float4 uv:TEXCOORD1;
+                float4 TtoW0:TEXCOORD2;
+                float4 TtoW1:TEXCOORD3;
+                float4 TtoW2:TEXCOORD4;
+            &#125;;
+
+            v2f vert(a2v v)&#123;
+                v2f o;
+                o.pos&#x3D;UnityObjectToClipPos(v.vertex);
+                o.scrPos&#x3D;ComputeGrabScreenPos(o.pos);
+                &#x2F;&#x2F;得到被抓取的屏幕图像的采样坐标
+                o.uv.xy&#x3D;TRANSFORM_TEX(v.texcoord,_MainTex);
+                o.uv.zw&#x3D;TRANSFORM_TEX(v.texcoord,_BumpMap);
+                &#x2F;&#x2F;计算采样坐标，并存储到uv的xy和zw内
+                float3 worldPos&#x3D;mul(unity_ObjectToWorld,v.vertex).xyz;
+                fixed3 worldNormal&#x3D;UnityObjectToWorldNormal(v.normal);
+                fixed3 worldTangent&#x3D;UnityObjectToWorldDir(v.tangent.xyz);
+                fixed3 worldBinormal&#x3D;cross(worldNormal,worldTangent)*v.tangent.w;
+                o.TtoW0&#x3D;float4(worldTangent.x,worldBinormal.x,worldNormal.x,worldPos.x);
+                o.TtoW1&#x3D;float4(worldTangent.y,worldBinormal.y,worldNormal.y,worldPos.y);
+                o.TtoW2&#x3D;float4(worldTangent.z,worldBinormal.z,worldNormal.z,worldPos.z);
+                return o;
+            &#125;
+
+            fixed4 frag:SV_TARGET&#123;
+                float3 worldPos&#x3D;float3(i.TtoW0.w,i.TtoW1.w,i.TtoW2.w);
+                fixed3 worldViewDir&#x3D;normalize(UnityWorldSpaceViewDir(worldPos));
+                fixed3 bump&#x3D;UnpackNormal(tex2D(_BumpMap,i.uv.zw));
+                float2 offset&#x3D;bump.xy*_Distortion*_RefractionTex_TexelSize.xy;
+                i.scrPos.xy&#x3D;offset+i.scrPos.xy;
+                fixed3 refrCol&#x3D;tex2D(_RefractionTex,i.scrPos.xy&#x2F;i.srcPos.w).rgb;
+                bump&#x3D;normalize(half3(dot(i.TtoW0.xyz,bump),dot(i.TtoW1.xyz,bump),dot(i.TtoW2.xyz,bump)));
+                fixed3 reflDir&#x3D;reflect(-worldViewDir,bump);
+                fixed4 texColor&#x3D;tex2D(_MainTex,i.uv.xy);
+                fixed3 reflCol&#x3D;texCUBE(_Cubemap,reflDir).rgb*texC&#39;.rgb;
+                fixed3 finalColor&#x3D;reflCol*(1-_RefractAmount)+refrCol*_RefractAmount;
+                return fixed4(finalColor,1);
+            &#125;
+            ENDCG
+        &#125;
+    &#125;
+    FallBack &quot;Diffuse&quot;
+&#125;</code></pre>
+
+<p><strong>ComputeGrabScreenPos</strong>：得到对应被抓取的屏幕图像的采样坐标</p>
 </div><ul class="post-copyright"><li class="post-copyright-author"><strong>本文作者：</strong>Karmotrine.</li><li class="post-copyright-link"><strong>本文链接：</strong><a href="https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/" title="Unity Shader05——高级纹理">https://karmotrine.fun/2022/01/16/Unity-Shader05%E2%80%94%E2%80%94%E9%AB%98%E7%BA%A7%E7%BA%B9%E7%90%86/</a></li><li class="post-copyright-license"><strong>版权声明：</strong>本博客所有文章除特别声明外，均默认采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh" target="_blank" rel="noopener" title="CC BY-NC-SA 4.0 "><svg class="icon"><use xlink:href="#icon-creative-commons-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-by-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-nc-line"></use></svg><svg class="icon"><use xlink:href="#icon-creative-commons-sa-line"></use></svg></a> 许可协议。</li></ul></section></article><div class="post-nav"><div class="post-nav-item"></div><div class="post-nav-item"><a class="post-nav-next" href="/2022/01/16/Unity-Shader04%E2%80%94%E2%80%94%E5%A4%8D%E6%9D%82%E5%85%89%E7%85%A7/" rel="next" title="Unity Shader04——复杂光照"><span class="post-nav-text">Unity Shader04——复杂光照</span><svg class="icon" aria-hidden="true"><use xlink:href="#icon-arrow-right-s-line"></use></svg></a></div></div></div><div class="hty-card" id="comment"><div class="comment-tooltip text-center"><span>若您想及时得到回复提醒，建议跳转 GitHub Issues 评论。</span><br><span>若没有本文 Issue，您可以使用 Comment 模版新建。</span><br></div></div></main><footer class="sidebar-translate" id="footer"><div class="copyright"><span>&copy; 2021 – 2022 </span><span class="with-love" id="animate"><svg class="icon" aria-hidden="true"><use xlink:href="#icon-cloud-line"></use></svg></span><span class="author"> Karmotrine</span></div><div class="powered"><span>由 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 驱动 v6.0.0</span><span class="footer-separator">|</span><span>主题 - <a rel="noopener" href="https://github.com/YunYouJun/hexo-theme-yun" target="_blank"><span>Yun</span></a> v1.7.0</span></div><div class="live-time"><span>本博客已萌萌哒地运行</span><span id="display_live_time"></span><span class="moe-text">(●'◡'●)</span><script>function blog_live_time() {
   setTimeout(blog_live_time, 1000);
   const start = new Date('2022-01-07T00:00:00');
